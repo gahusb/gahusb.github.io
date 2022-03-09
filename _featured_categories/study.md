@@ -8,7 +8,7 @@ description: >
   하위 메뉴 예시
 ---
 
-# Subcat
+# Study
 
 ## 카테고리
 
