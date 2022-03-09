@@ -49,7 +49,7 @@ author:
 # Add links to the sidebar.
 menu:
   - title:             About
-    url:               /about.me
+    url:               /about/
   - title:             Blog
     url:               /blog/
   - title:             Projects
@@ -65,7 +65,7 @@ menu:
         url:           /algorithms/
       - title:         WebDevelop
         url:           /web-develop/
-  - title:             Daily Posts
+  - title:             Daily-Posts
     url:               /daily-posts/
     submenu:
       - title:         Diary
