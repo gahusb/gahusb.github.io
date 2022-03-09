@@ -1,0 +1,208 @@
+---
+layout: post
+title: Study-Algorithms
+image: /assets/img/blog/jj-ying.jpg
+subtitle: 14502.연구소 - 삼성기출문제
+tags: Algorithm, BOJ, JAVA, 삼성SW기출문제
+accent_image: 
+  background: url('/assets/img/blog/jj-ying.jpg') center/cover
+  overlay: false
+accent_color: '#ccc'
+theme_color: '#ccc'
+description: >
+  Version 9.1 provides minor design changes, new features, and closes multiple issues.
+invert_sidebar: true
+categories:
+  - study
+  - algorithms
+---
+
+# 14502. 연구소 - 삼성기출문제 (from.백준알고리즘)
+
+해당 문제는 완전탐색으로 풀 수 있는 문제다. 벽을 세우는 경우를 전부 해보고 안전 영역의 최대 크기를 구하면 된다.
+
+---
+
+### 14502\. 연구소
+
+인체에 치명적인 바이러스를 연구하던 연구소에서 바이러스가 유출되었다. 다행히 바이러스는 아직 퍼지지 않았고, 바이러스의 확산을 막기 위해서 연구소에 벽을 세우려고 한다.
+
+연구소는 크기가 N×M인 직사각형으로 나타낼 수 있으며, 직사각형은 1×1 크기의 정사각형으로 나누어져 있다. 연구소는 빈 칸, 벽으로 이루어져 있으며, 벽은 칸 하나를 가득 차지한다.
+
+일부 칸은 바이러스가 존재하며, 이 바이러스는 상하좌우로 인접한 빈 칸으로 모두 퍼져나갈 수 있다. 새로 세울 수 있는 벽의 개수는 3개이며, 꼭 3개를 세워야 한다.
+
+예를 들어, 아래와 같이 연구소가 생긴 경우를 살펴보자.
+
+> 2 0 0 0 1 1 0  
+> 0 0 1 0 1 2 0  
+> 0 1 1 0 1 0 0  
+> 0 1 0 0 0 0 0  
+> 0 0 0 0 0 1 1  
+> 0 1 0 0 0 0 0  
+> 0 1 0 0 0 0 0
+
+이때, 0은 빈 칸, 1은 벽, 2는 바이러스가 있는 곳이다. 아무런 벽을 세우지 않는다면, 바이러스는 모든 빈 칸으로 퍼져나갈 수 있다.
+
+2행 1열, 1행 2열, 4행 6열에 벽을 세운다면 지도의 모양은 아래와 같아지게 된다.
+
+> 2 1 0 0 1 1 0  
+> 1 0 1 0 1 2 0  
+> 0 1 1 0 1 0 0  
+> 0 1 0 0 0 1 0  
+> 0 0 0 0 0 1 1  
+> 0 1 0 0 0 0 0  
+> 0 1 0 0 0 0 0
+
+바이러스가 퍼진 뒤의 모습은 아래와 같아진다.
+
+> 2 1 0 0 1 1 2  
+> 1 0 1 0 1 2 2  
+> 0 1 1 0 1 2 2  
+> 0 1 0 0 0 1 2  
+> 0 0 0 0 0 1 1  
+> 0 1 0 0 0 0 0  
+> 0 1 0 0 0 0 0
+
+벽을 3개 세운 뒤, 바이러스가 퍼질 수 없는 곳을 안전 영역이라고 한다. 위의 지도에서 안전 영역의 크기는 27이다.
+
+연구소의 지도가 주어졌을 때 얻을 수 있는 안전 영역 크기의 최댓값을 구하는 프로그램을 작성하시오.
+
+#### 입력 (Input)
+
+첫째 줄에 지도의 세로 크기 N과 가로 크기 M이 주어진다. (3 ≤ N, M ≤ 8)
+
+둘째 줄부터 N개의 줄에 지도의 모양이 주어진다. 0은 빈 칸, 1은 벽, 2는 바이러스가 있는 위치이다. 2의 개수는 2보다 크거나 같고, 10보다 작거나 같은 자연수이다.
+
+빈 칸의 개수는 3개 이상이다.
+
+#### 출력(Output)
+
+첫째 줄에 얻을 수 있는 안전 영역의 최대 크기를 출력한다.
+
+---
+
+1\. 문제풀이
+
+이 문제를 풀때에 생각해야할 부분은 두 가지 입니다.
+
+1.  이 차원 배열로 이루어진 map에 임의의 벽 3개를 어떤 방식으로 세운다고 가정할 것인가?
+2.  확산시 방문 체크와 어떻게 전체에 바이러스를 퍼졌다고 할까?
+
+1번은 완전 탐색 DFS를 통해서 세우고 해제하고를 하며 재귀를 돌아 최종적으로 벽을 3개 세웠을 때, 확산을 실행하여 남은 안전 영역을 구하면 됩니다.
+
+2번은 확산에 대한 좌표를 큐에 담고, 큐에서 바이러스가 있는 공간을 하나씩 빼서 상, 하, 좌, 우로 바이러스가 퍼질 수 있는 공간이면 맵에 기록하고 큐에 새로운 바이러스를 넣어주며 큐에 더이상 확산할 수 있는 바이러스가 없을때까지 반복하여 해결합니다.
+
+이것을 코드로 표현하겠습니다.
+
+---
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
+public class Institute {
+	// 벽을 3개 세운 뒤, 바이러스가 퍼질 수 없는 곳을 안전 영역이라고 한다.
+	// 바이러스는 상, 하, 좌, 우로 퍼져 나간다.
+	// 0은 빈칸, 1은 벽, 2는 바이러스
+	static int N, M, safty, listSize;
+	static ArrayList<Block> list, virusList;
+	static Queue<Block> virus;
+	static int[][] map;
+	static boolean[][] visited;
+	static int[][] dif = {
+			{0, 1, -1, 0},
+			{1, 0, 0, -1},
+	};
+	
+	static void virus(int cnt, int idx) {
+		if(cnt == 3) {
+			visited = new boolean[N][M];
+			diffusion();
+			int max = searchSafy();
+			if(max > safty) safty = max;
+			return;
+		}
+		
+		if(listSize <= idx) return;
+		
+		Block tmp = list.get(idx);
+		map[tmp.x][tmp.y] = 1;
+		virus(cnt + 1, idx + 1);
+		map[tmp.x][tmp.y] = 0;
+		virus(cnt, idx + 1);
+	}
+	
+	static void diffusion() {
+		virus.clear();
+		
+		for (int i = 0; i < virusList.size(); i++) {
+			virus.add(virusList.get(i));
+		}
+		
+		while(!virus.isEmpty()) {
+			Block tmp = virus.poll();
+			visited[tmp.x][tmp.y] = true;
+			for (int i = 0; i < 4; i++) {
+				int nx = tmp.x + dif[0][i];
+				int ny = tmp.y + dif[1][i];
+				if(0 <= nx && nx < N && 0 <= ny && ny < M && map[nx][ny] == 0 && !visited[nx][ny]) {
+					visited[nx][ny] = true;
+					virus.add(new Block(nx, ny));
+				}
+			}
+		}
+	}
+	
+	static int searchSafy() {
+		int area = 0;
+		
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < M; j++) {
+				if(map[i][j] == 0 && !visited[i][j]) area++;
+			}
+		}
+		
+		return area;
+	}
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		map = new int[N][M];
+		list = new ArrayList<>();
+		virusList = new ArrayList<>();
+		virus = new LinkedList<Block>();
+		for (int i = 0; i < N; i++) {
+			if(!st.hasMoreTokens()) st = new StringTokenizer(br.readLine());
+			for (int j = 0; j < M; j++) {
+				map[i][j] = Integer.parseInt(st.nextToken());
+				if(map[i][j] == 0) {
+					list.add(new Block(i, j));
+					listSize++;
+				} else if(map[i][j] == 2) virusList.add(new Block(i, j));
+			}
+		}
+		
+		safty = 0;
+		virus(0, 0);
+		
+		System.out.println(safty);
+	}
+	
+	public static class Block {
+		int x, y;
+		public Block(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+	}
+}
+```

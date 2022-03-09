@@ -1,0 +1,245 @@
+---
+layout: post
+title: Study-Algorithms
+image: /assets/img/blog/jj-ying.jpg
+subtitle: 17144.미세먼지 안녕! - 삼성기출문제
+tags: Algorithm, BOJ, JAVA, 삼성SW기출문제
+accent_image: 
+  background: url('/assets/img/blog/jj-ying.jpg') center/cover
+  overlay: false
+accent_color: '#ccc'
+theme_color: '#ccc'
+description: >
+  Version 9.1 provides minor design changes, new features, and closes multiple issues.
+invert_sidebar: true
+categories:
+  - study
+  - algorithms
+---
+
+# 17144. 미세먼지 안녕! - 삼성기출문제 (from.백준알고리즘)
+
+해당 문제는 시뮬레이션 문제로 단계별로 수행하는 함수를 이용하여 풀 수 있는 문제입니다.
+
+---
+
+### 17144\. 미세먼지 안녕!
+
+미세먼지를 제거하기 위해 구사과는 공기청정기를 설치하려고 한다. 공기청정기의 성능을 테스트하기 위해 구사과는 집을 크기가 R×C인 격자판으로 나타냈고, 1×1 크기의 칸으로 나눴다. 구사과는 뛰어난 코딩 실력을 이용해 각 칸 (r, c)에 있는 미세먼지의 양을 실시간으로 모니터링하는 시스템을 개발했다. (r, c)는 r행 c열을 의미한다.
+
+[![Picture](/assets/img/algo_img/17144/17144_1.png)
+
+공기청정기는 항상 1번 열에 설치되어 있고, 크기는 두 행을 차지한다. 공기청정기가 설치되어 있지 않은 칸에는 미세먼지가 있고, (r, c)에 있는 미세먼지의 양은 Ar,c이다.
+
+1초 동안 아래 적힌 일이 순서대로 일어난다.
+
+1.  미세먼지가 확산된다. 확산은 미세먼지가 있는 모든 칸에서 동시에 일어난다.
+    -   (r, c)에 있는 미세먼지는 인접한 네 방향으로 확산된다.
+    -   인접한 방향에 공기청정기가 있거나, 칸이 없으면 그 방향으로는 확산이 일어나지 않는다.
+    -   확산되는 양은 Ar,c/5이고 소수점은 버린다.
+    -   (r, c)에 남은 미세먼지의 양은 Ar,c - (Ar,c/5)×(확산된 방향의 개수) 이다.
+2.  공기청정기가 작동한다.
+    -   공기청정기에서는 바람이 나온다.
+    -   위쪽 공기청정기의 바람은 반시계방향으로 순환하고, 아래쪽 공기청정기의 바람은 시계방향으로 순환한다.
+    -   바람이 불면 미세먼지가 바람의 방향대로 모두 한 칸씩 이동한다.
+    -   공기청정기에서 부는 바람은 미세먼지가 없는 바람이고, 공기청정기로 들어간 미세먼지는 모두 정화된다.
+
+다음은 확산의 예시이다.
+
+[##_Image|kage@7Hqze/btqPibebjem/K36ASyT7tMqbeUf3WLW191/img.png|CDM|1.3|{"originWidth":1178,"originHeight":440,"style":"alignCenter","mobileStyle":"widthContent","width":430,"caption":"미세먼지안녕_2","filename":"17144_미세먼지안녕_2.png"}_##]
+
+[![Picture](/assets/img/algo_img/17144/17144_2.png)
+
+왼쪽과 오른쪽에 칸이 없기 때문에, 두 방향으로만 확산이 일어났다.
+
+[![Picture](/assets/img/algo_img/17144/17144_3.png)
+
+인접한 네 방향으로 모두 확산이 일어난다.
+
+[![Picture](/assets/img/algo_img/17144/17144_4.png)
+
+공기청정기가 있는 칸으로는 확산이 일어나지 않는다.
+
+공기청정기의 바람은 다음과 같은 방향으로 순환한다.
+
+[![Picture](/assets/img/algo_img/17144/17144_5.png)
+
+방의 정보가 주어졌을 때, T초가 지난 후 구사과의 방에 남아있는 미세먼지의 양을 구해보자.
+
+#### 입력(Input)
+
+첫째 줄에 R, C, T (6 ≤ R, C ≤ 50, 1 ≤ T ≤ 1,000) 가 주어진다.
+
+둘째 줄부터 R개의 줄에 Ar,c (-1 ≤ Ar,c ≤ 1,000)가 주어진다. 공기청정기가 설치된 곳은 Ar,c가 -1이고, 나머지 값은 미세먼지의 양이다. -1은 2번 위아래로 붙어져 있고, 가장 윗 행, 아랫 행과 두 칸이상 떨어져 있다.
+
+#### 출력(Output)
+
+첫째 줄에 T초가 지난 후 구사과 방에 남아있는 미세먼지의 양을 출력한다.
+
+---
+
+### 1\. 문제 풀이
+
+이 문제를 풀때에 생각해야할 제일 중요한 핵심은 두 가지 입니다.
+
+1.  확산에서 각 현 위치의 값만 고려해서 겹치는 칸은 더해진다.
+2.  공기청정시 돌아가는 배열 돌리기.
+
+1번은 확산 예시 3번 그림을 보았을때
+
+-   (0, 1)에 30이 세 방향으로 확산되었기 때문에 30 - ((30/5)\*3) = 12라는 남는 부분과 확산되어 오는 두 방향에서의 계산식 11 / 5 = 2, 7 / 5 = 1 즉, 12 + 2 + 1 = 15
+-   (0, 2)에 7이 두 방향으로 확산되었기 때문에 7 - ((7/5)\*2) = 5라는 남는 부분과 확산되어 오는 한 방향에서의 계산식 30/5 = 6 즉, 5 + 6 = 11
+
+따라서 한 칸씩 이동하면서 계산을 해주면 됩니다.
+
+2번은 배열돌리기 입니다. 배열은 사각형 모양으로 끝을 만나기 전까지 INDEX를 계속 반복하여 증가/감소를 하다가 끝이라는 경계를 만나면 각 인덱스의 증가/감소 플래그를 바꿔주면 됩니다.
+
+-   인덱스는 i,j라고 합니다. (여기서 끝은 배열 구분선 직전까지를 의미합니다. 즉, 인덱스의 범위)
+-   처음 공기청정기의 위치에 따라서 반으로 나누고 i,j의 범위를 정해줍니다. (예시는 아래쪽 기준)
+-   처음에는 i가 증가하는 방향으로 가다가 끝을 만나면 멈추고 j를 증가시켜 줍니다.
+-   j가 증가하는 방향으로 가다가 끝을 만나면 멈추고 i를 감소시켜 줍니다.
+-   i를 감소시켜주다가 공기청정기를 만나면 종료합니다.
+
+이렇게 순차적으로 배열돌리기를 하면서 다음에 있는 값을 저장하고, 해당 위치로 이동해 넣어주고를 반복해줍니다.
+
+이것을 코드로 표현하겠습니다.
+
+---
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+
+public class Bye_Microcum {
+	// (6 <= R,C <= 50, 1<= T <= 1000) (-1 <= Arc <= 1000)
+	// 공기청정기 위치는 -1, -1은 위아래 붙어있고, 가장 윗 행, 아랫 행과 두 칸이상 떨어져 있다.
+	static int R, C, T, result;
+	static int[][] A, B;
+	static int[][] idx = {
+			{-1, 0, 1, 0},
+			{0, -1, 0, 1}
+	};
+	static int upR, upC, downR, downC;
+	
+	static void diffusion() {
+		B = new int[R][C];
+		
+		for (int i = 0; i < R; i++) {
+			for (int j = 0; j < C; j++) {
+				if(A[i][j] == -1) {
+					B[i][j] = -1;
+					continue;
+				}
+				int cnt = 0;
+				if(A[i][j] != 0) {					
+					for (int k = 0; k < 4; k++) {
+						int nxR = i + idx[0][k];
+						int nxC = j + idx[1][k];
+						if(nxR < 0 || nxC < 0 || nxR >= R || nxC >= C || A[nxR][nxC] == -1) {
+							continue;
+						} else {
+							B[nxR][nxC] += A[i][j] / 5;
+							cnt++;
+						}
+					}
+					B[i][j] += A[i][j] - ((A[i][j]/5)*cnt);
+				}
+			}
+		}
+		
+		// 배열 복사
+		for (int i = 0; i < R; i++) {
+			for (int j = 0; j < C; j++) {
+				A[i][j] = B[i][j];
+			}
+		}
+	}
+	
+	static void air_cleanning() {
+		int temp, nextTemp, dir;
+		
+		int[][] up = {
+				{0, -1, 0, 1},
+				{1, 0, -1, 0},
+		};
+		int i = upR, j = upC + 1; dir = 0;
+		nextTemp = A[i][j];
+		A[i][j] = 0;
+		while(true) {
+			temp = nextTemp;
+			int nR = i + up[0][dir];
+			int nC = j + up[1][dir];
+			if(nR < 0 || R <= nR || nC < 0 || C <= nC) {
+				dir++;
+				nR = i + up[0][dir];
+				nC = j + up[1][dir];
+			} else if(A[nR][nC] == -1) break;
+			nextTemp = A[nR][nC];
+			A[nR][nC] = temp;
+			i = nR; j = nC;
+		}
+		
+		int[][] down = {
+				{0, 1, 0, -1},
+				{1, 0, -1, 0},
+		};
+		i = downR; j = downC + 1; dir = 0;
+		nextTemp = A[i][j];
+		A[i][j] = 0;
+		while(true) {
+			temp = nextTemp;
+			int nR = i + down[0][dir];
+			int nC = j + down[1][dir];
+			if(nR < 0 || R <= nR || nC < 0 || C <= nC) {
+				dir++;
+				nR = i + down[0][dir];
+				nC = j + down[1][dir];
+			} else if(A[nR][nC] == -1) break;
+			nextTemp = A[nR][nC];
+			A[nR][nC] = temp;
+			i = nR; j = nC;
+		}
+	}
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		R = Integer.parseInt(st.nextToken());
+		C = Integer.parseInt(st.nextToken());
+		T = Integer.parseInt(st.nextToken());
+		
+		A = new int[R][C];
+		boolean air_condition = false;
+		for (int i = 0; i < R; i++) {
+			if(!st.hasMoreTokens()) st = new StringTokenizer(br.readLine());
+			for (int j = 0; j < C; j++) {
+				A[i][j] = Integer.parseInt(st.nextToken());
+				if(A[i][j] == -1 && !air_condition) {
+					upR = i; upC = j;
+					downR = i + 1; downC = j;
+					air_condition = true;
+				}
+			}
+			
+		}
+		
+		for (int i = 0; i < T; i++) {
+			diffusion();
+			air_cleanning();
+		}
+		
+		for (int i = 0; i < R; i++) {
+			for (int j = 0; j < C; j++) {
+				if(A[i][j] == -1) continue;
+				result += A[i][j];
+			}
+		}
+		
+		System.out.println(result);
+	}
+}
+```
