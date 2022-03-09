@@ -1,7 +1,7 @@
 ---
 layout: list
 category: daily-posts
-bigtitle: Retrorespective
+bigtitle: Retrospective
 slug: retro
 description: >
   하위메뉴 테스트1

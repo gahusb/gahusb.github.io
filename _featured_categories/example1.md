@@ -1,6 +1,6 @@
 ---
 # Featured tags need to have either the `list` or `grid` layout (PRO only).
-layout: grid
+layout: list
 
 # The title of the tag's page.
 title: Example1
@@ -13,7 +13,7 @@ description: >
   메뉴 예시 1
 
 # (Optional) You can disable grouping posts by date.
-no_groups: true
+# no_groups: true
 
 # Exclude this example category from the sitemap.
 # DON'T USE THIS SETTING IN YOUR CATEGORIES!
