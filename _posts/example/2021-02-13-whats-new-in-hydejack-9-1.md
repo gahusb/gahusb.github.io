@@ -11,7 +11,7 @@ description: >
   Version 9.1 provides minor design changes, new features, and closes multiple issues.
 invert_sidebar: true
 categories:
-  - example2
+  - example
 ---
 
 # What's New in Hydejack 9.1?

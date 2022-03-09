@@ -1,6 +1,6 @@
 ---
 layout: list
-bigtitle: Daily Posts
+bigtitle: Daily-Posts
 slug: daily-posts
 menu: true
 submenu: true

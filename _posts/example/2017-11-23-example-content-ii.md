@@ -6,7 +6,7 @@ description: >
 image: /assets/img/blog/example-content-ii.jpg
 sitemap: false
 categories: 
-  - example1
+  - example
 ---
 
 There should be whitespace between paragraphs. We recommend including a README, or a file with information about your project.

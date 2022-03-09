@@ -49,29 +49,27 @@ author:
 # Add links to the sidebar.
 menu:
   - title:             About
-    url:               /about/
+    url:              /about/
   - title:             Blog
-    url:               /blog/
+    url:              /blog/
   - title:             Projects
-    url:               /projects/
-  - title:             Example1
-    url:               /example1/
-  - title:             Example2
-    url:               /example2/
+    url:              /projects/
   - title:             Study
-    url:               /study/
+    url:              /study/
     submenu:
       - title:         Algorithms
-        url:           /algorithms/
+        url:          /algorithms/
       - title:         WebDevelop
-        url:           /web-develop/
+        url:          /web-develop/
   - title:             Daily-Posts
-    url:               /daily-posts/
+    url:              /daily-posts/
     submenu:
       - title:         Diary
-        url:           /diary/
+        url:          /diary/
       - title:         Retrospective
-        url:           /retro/
+        url:          /retro/
+  - title:             Example
+    url:              /example/
 
 # Add links to the footer.
 # Typically you'll want to link to your cookie- or privacy policy (if appliable), etc..
@@ -309,7 +307,7 @@ hydejack:
 
 collections:
   featured_categories:
-    permalink:         /blog/:name/
+    permalink:         /:name/
     output:            true
 
   featured_tags:
@@ -442,3 +440,12 @@ jekyll_compose:
       links:
         - title: Project Link
           url: https://example.com
+
+tipue_search:
+  include:
+    pages: false
+    collections: []
+  exclude:
+    files: []
+    categories: []
+    tags: []
