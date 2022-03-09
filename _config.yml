@@ -25,7 +25,7 @@ title:                 쟁's BLOG
 # A short description (~150 chars) of the page used for the meta description tag.
 # Can use markdown, but no more than one paragraph (enforced by `>`)
 description:           >
-  git으로 다시 시작하는 blog 작성
+  git io로 다시 시작하는 blog 작성
 
 # A shorter description for the sidebar.
 tagline:               공부 내용, 프로젝트, 개인 일상, 생각 정리
@@ -48,6 +48,8 @@ author:
 
 # Add links to the sidebar.
 menu:
+  - title:             About
+    url:               /about.me
   - title:             Blog
     url:               /blog/
   - title:             Projects
@@ -56,6 +58,20 @@ menu:
     url:               /example1/
   - title:             Example2
     url:               /example2/
+  - title:             Study
+    url:               /study/
+    submenu:
+      - title:         Algorithms
+        url:           /algorithms/
+      - title:         WebDevelop
+        url:           /web-develop/
+  - title:             Daily Posts
+    url:               /daily-posts/
+    submenu:
+      - title:         Diary
+        url:           /diary/
+      - title:         Retrospective
+        url:           /retro/
 
 # Add links to the footer.
 # Typically you'll want to link to your cookie- or privacy policy (if appliable), etc..
