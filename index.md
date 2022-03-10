@@ -1,7 +1,6 @@
 ---
-layout: welcome
-title: Welcome
-cover: true
+layout: page
+title: Thank You!
 sitemap: false
 ---
 

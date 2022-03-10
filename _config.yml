@@ -49,27 +49,23 @@ author:
 # Add links to the sidebar.
 menu:
   - title:             About
-    url:              /about/
-  - title:             Blog
-    url:              /blog/
+    url:               /about/
+  - title:             Résumé*
+    url:               /resume/
+  - title:             Algorithms
+    url:               /algorithms/
+  - title:             Web
+    url:               /web/
+  - title:             Diary
+    url:               /diary/
+  - title:             Retrospective
+    url:               /retro/
   - title:             Projects
-    url:              /projects/
-  - title:             Study
-    url:              /study/
-    submenu:
-      - title:         Algorithms
-        url:          /algorithms/
-      - title:         Web
-        url:          /web/
-  - title:             DailyPosts
-    url:              /dailyposts/
-    submenu:
-      - title:         Diary
-        url:          /diary/
-      - title:         Retrospective
-        url:          /retro/
+    url:               /projects/
+  - title:             Documentation
+    url:               /docs/
   - title:             Example
-    url:              /example/
+    url:               /example/
 
 # Add links to the footer.
 # Typically you'll want to link to your cookie- or privacy policy (if appliable), etc..
@@ -176,7 +172,7 @@ defaults:
         type:          WebPage
 
 kramdown:
-  math_engine:         katex
+  math_engine:         mathjax
   math_engine_opts:    {}
   footnote_backlink:   '&#x21a9;&#xfe0e;'
 
