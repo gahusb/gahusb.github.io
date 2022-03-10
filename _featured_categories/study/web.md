@@ -1,8 +1,8 @@
 ---
 layout: list
 category: study
-bigtitle: Web-Develop
-slug: web-develop
+bigtitle: Web
+slug: web
 description: >
   하위메뉴 테스트1
 

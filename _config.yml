@@ -59,10 +59,10 @@ menu:
     submenu:
       - title:         Algorithms
         url:          /algorithms/
-      - title:         WebDevelop
-        url:          /web-develop/
-  - title:             Daily-Posts
-    url:              /daily-posts/
+      - title:         Web
+        url:          /web/
+  - title:             DailyPosts
+    url:              /dailyposts/
     submenu:
       - title:         Diary
         url:          /diary/
@@ -95,7 +95,7 @@ paginate_path:         /:num/
 # Theme
 # ---------------------------------------------------------------------------------------
 
-#theme: jekyll-theme-hydejack
+theme: jekyll-theme-hydejack
 remote_theme: hydecorp/hydejack@v9
 
 

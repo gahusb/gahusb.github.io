@@ -1,7 +1,7 @@
 ---
 layout: list
-bigtitle: Daily-Posts
-slug: daily-posts
+bigtitle: DailyPosts
+slug: dailyposts
 menu: true
 submenu: true
 description: >
