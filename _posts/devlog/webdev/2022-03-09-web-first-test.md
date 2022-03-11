@@ -1,6 +1,8 @@
 ---
 layout: post
-title: Introducing Hydejack 9
+title: Web-first-test
+category: devlog
+tags: webdev
 image: 
   path: /assets/img/blog/jeremy-bishop@0,5x.jpg
 description: >

@@ -26,6 +26,10 @@
     margin-top: 0;
   }
 
+  .mt2 {
+    margin-top: 1rem;
+  }
+
   ul {
     margin-bottom: 1.5rem;
   }
@@ -158,8 +162,8 @@
   }
 
   @media screen and (min-width: $break-point-dynamic) {
-    .columns-break { 
-      $helper: $content-width-5 / 2 - $content-margin-5;
+    .columns-break {
+      $helper: $content-width-5 / 2 - $content-margin-5 - 1rem;
       width: calc(50vw + #{$helper});
       > .column-3-5 { 
         width: $content-width-5;

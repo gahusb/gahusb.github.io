@@ -1,6 +1,7 @@
 ---
 layout: post
-title: Study-webDevelop-test
+title: Introducing Hydejack 9
+category: example
 image: 
   path: /assets/img/blog/jeremy-bishop@0,5x.jpg
 description: >
