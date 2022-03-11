@@ -3,13 +3,13 @@
 
 # Uncomment and set the URL of your site (with protocol, e.g. `https://`)
 # NOTE: You don't need to provide this property when hosting on GitHub Pages or Netlify.
-url:                   https://gahusb.github.io
+# url:                   https://gahusb.github.io
 
 # Uncomment and set the "base URL" of your site.
 # When your site is in a subdirectory, set to `/<name of directory>`,
 # with a leading `/` but no trailing `/`. Use the empty string '' otherwise.
 # NOTE: You don't need to provide this property when hosting on GitHub Pages or Netlify.
-# baseurl:               '/hydejack-starter-kit'
+# baseurl:               ''
 
 
 # General settings
@@ -27,7 +27,7 @@ timezone:              Asia/Seoul
 # A short description (~150 chars) of the page used for the meta description tag.
 # Can use markdown, but no more than one paragraph (enforced by `>`)
 description:           >
-  git io로 다시 시작하는 blog 작성
+  git io로 다시 시작하는 blog
 
 # A shorter description for the sidebar.
 tagline:               공부 내용, 프로젝트, 개인 일상, 생각 정리
@@ -99,7 +99,7 @@ accent_color:          rgb(79,177,186)
 theme_color:           rgb(25,55,71)
 
 # The string encoding which fonts to fetch from Google Fonts.
-# See: <https://hydejack.com/docs/configuration/>
+# See: <https://hydejack.com/docs/config/#changing-fonts>
 google_fonts:          Noto+Sans+KR|JetBrains+Mono|Nanum+Gothic+Coding
 
 # The text font. Expects a string that is a valid CSS font-family value.
