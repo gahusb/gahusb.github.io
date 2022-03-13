@@ -2,6 +2,8 @@
 layout: post
 title: Transferring git storage
 image: /assets/img/daily/git_cat_22_03_13.png
+category: dailylog
+tags: diary
 accent_image: 
   background: url('/assets/img/daily/git_cat_22_03_13.png') center/cover
   overlay: false
@@ -10,7 +12,6 @@ theme_color: '#ccc'
 description: >
   깃 저장소 변경하면서 잠깐 쉬는 타임에 끄적여보는 일상 기록
 invert_sidebar: true
-categories: diary
 ---
 
 # 일상 기록 - 깃 저장소 변경
