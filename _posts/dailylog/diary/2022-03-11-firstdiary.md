@@ -10,7 +10,7 @@ theme_color: '#ccc'
 description: >
   Version 9.1 provides minor design changes, new features, and closes multiple issues.
 invert_sidebar: true
-categories: algorithms
+categories: diary
 ---
 
 # 일상 기록 첫 번째 이야기
