@@ -410,6 +410,7 @@ compress_html:
     envs:              [development]
 
 sass:
+  ssas_dir:            _ssas
   style:               compressed
 
 
