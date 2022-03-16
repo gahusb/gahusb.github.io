@@ -447,6 +447,5 @@ jekyll_compose:
 # jekyll-feed settings
 feed:
   categories:
-    - example
     - devlog
     - dailylog

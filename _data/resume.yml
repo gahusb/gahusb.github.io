@@ -2,40 +2,34 @@
 # If you don't have a JSON Resume you can just edit this YAML file instead.
 # See also: <https://jsonresume.org/>.
 basics:
-  name: "Richard Hendricks"
+  name: "Jaeoh Park"
   label: "Programmer"
-  picture: "https://via.placeholder.com/240x240"
-  email: ""
-  phone: "(912) 555-4321"
-  website: "https://piedpiper.com"
+  picture: "/assets/img/me/myPhoto.jpg"
+  email: "bgg8988@gmail.com"
+  phone: "010-3907-1392"
+  website: "https://gahusb.github.io"
   summary: >
-    Richard hails from Tulsa.
-    He has earned degrees from the University of Oklahoma and Stanford. (Go Sooners and Cardinals!)
-    Before starting Pied Piper, he worked for Hooli as a part time software developer.
-    While his work focuses on applied information theory,
-    mostly optimizing lossless compression schema of both the length-limited and adaptive variants,
-    his non-work interests range widely,
-    everything from quantum computing to chaos theory.
-    He could tell you about it, but THAT would NOT be a “length-limited” conversation!
-    Open `_data/resume.yml` to edit this text.
+    지속 가능한 성장을 추구하는 주니어 개발자 입니다.
+    저는 현재 롯데정보통신 조직의 캐시비기술연구소 팀으로 개발 담당에서 일하고 있는 3년차 입니다.
+    주요 업무는 버스 카드 자동 요금 징수 단말기(AFC) Linux System S/W 개발 & 지역 별 프로세스 기능 및 교통 카드 결제 로직 개발을 하고 있습니다.
   location:
-    address: "2712 Broadway St"
-    postalCode: "CA 94115"
-    city: "San Francisco"
-    countryCode: "US"
-    region: "California"
+    address: "Yeongdeungpo-gu, Seoul, Republic of Korea"
+    postalCode: "07352"
+    city: "Seoul"
+    countryCode: "KR"
+    region: "Seoul"
   profiles:
-    - network: "Twitter"
-      username: "RHendricksCEO"
-      url: ""
     - network: "LinkedIn"
-      username: "Richard Hendricks"
-      url: ""
+      username: "jaeoh park"
+      url: "https://www.linkedin.com/in/jaeoh-park-gahusb/"
+    - network: "Instagram"
+      username: "gahusb"
+      url: "https://www.instagram.com/gahusb/"
 work:
-  - company: "Pied Piper"
-    position: "CEO/President"
-    website: "https://piedpiper.com"
-    startDate: "2013-12-01"
+  - company: "Lotte data communication"
+    position: "Seniority"
+    website: "https://www.ldcc.co.kr/"
+    startDate: "2020-01-03"
     endDate: ""
     summary: >
       Pied Piper is a multi-platform technology based on a proprietary universal compression algorithm that has
@@ -46,24 +40,24 @@ work:
       - "Successfully won Techcrunch Disrupt"
       - "Optimized an algorithm that holds the current world record for Weisman Scores"
 volunteer:
-  - organization: "CoderDojo"
-    position: "Teacher"
-    website: "https://coderdojo.com/"
-    startDate: "2012-01-01"
-    endDate: "2013-01-01"
-    summary: "Global movement of free coding clubs for young people."
+  - organization: ""
+    position: ""
+    website: ""
+    startDate: ""
+    endDate: ""
+    summary: ""
     highlights:
-      - "Awarded 'Teacher of the Month'"
+      - ""
 education:
-  - institution: "University of Oklahoma"
-    area: "Information Technology"
+  - institution: "Korea Aerospace University"
+    area: "Goyang-si, Kyeonggi-do"
     studyType: "Bachelor"
-    startDate: "2011-06-01"
-    endDate: "2014-01-01"
-    gpa: "4.0"
+    startDate: "2011-03-01"
+    endDate: "2019-02-22"
+    gpa: ""
     courses:
-      - "DB1101 - Basic SQL"
-      - "CS2011 - Java Introduction"
+      - "Basic SQL"
+      - "Java Introduction"
 awards:
   - title: "Digital Compression Pioneer Award"
     date: "2014-11-01"
@@ -77,20 +71,27 @@ publications:
     summary: "Innovative middle-out compression algorithm that changes the way we store data."
 skills:
   - name: "Web Development"
-    level: "Master"
+    level: "Junior1"
     keywords:
-      - "HTML"
-      - "CSS"
       - "Javascript"
-  - name: "Compression"
-    level: "Master"
+      - "VueJS"
+  - name: "JAVA"
+    level: "Junior4"
     keywords:
-      - "Mpeg"
-      - "MP4"
-      - "GIF"
+      - "JVM"
+      - "Object oriented"
+      - "JSP"
+      - "Spring"
+  - name: "C/C++"
+    level: "Junior4"
+    keywords:
+      - "Embedded"
+      - "IPC"
 languages:
-  - language: "English"
+  - language: "Korean"
     fluency: "Native speaker"
+  - language: "English"
+    fluency: "Only reading"
 interests:
   - name: "Wildlife"
     keywords:
