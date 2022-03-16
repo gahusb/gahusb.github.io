@@ -2,7 +2,7 @@
 layout: tag-list
 type: tag
 title: Algorithms
-slug: algorithms_solves
+slug: algorithmicsolves
 category: devlog
 sidebar: true
 order: 1
