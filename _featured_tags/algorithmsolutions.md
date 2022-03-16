@@ -1,8 +1,8 @@
 ---
 layout: tag-list
 type: tag
-title: Algorithms
-slug: algorithmicsolves
+title: Algorithms Solutions
+slug: algorithmsolutions
 category: devlog
 sidebar: true
 order: 1
