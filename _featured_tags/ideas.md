@@ -1,7 +1,7 @@
 ---
 layout: tag-list
 type: tag
-title: Diary
+title: Idea
 slug: ideas
 category: dailylog
 sidebar: true
