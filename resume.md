@@ -12,7 +12,6 @@ left_column:
  - education
  - projects
  - publications
- - references
 right_column:
  - awards
  - languages
