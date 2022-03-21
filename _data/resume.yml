@@ -2,9 +2,9 @@
 # If you don't have a JSON Resume you can just edit this YAML file instead.
 # See also: <https://jsonresume.org/>.
 basics:
-  name: "Jaeoh Park"
+  name: "박재오"
   label: "Programmer"
-  picture: "/assets/img/me/myPhoto.jpg"
+  picture: "/assets/me/myPhoto.jpg"s
   email: "bgg8988@gmail.com"
   phone: "010-3907-1392"
   website: "https://gahusb.github.io"
@@ -26,8 +26,8 @@ basics:
       username: "gahusb"
       url: "https://www.instagram.com/gahusb/"
 work:
-  - company: "Lotte data communication"
-    position: "Seniority"
+  - company: "롯데정보통신"
+    position: "선임"
     website: "https://www.ldcc.co.kr/"
     startDate: "2020-01-03"
     endDate: ""
@@ -38,9 +38,9 @@ work:
       - "Successfully won Techcrunch Disrupt"
       - "Optimized an algorithm that holds the current world record for Weisman Scores"
 education:
-  - institution: "Korea Aerospace University"
-    area: "Goyang-si, Kyeonggi-do"
-    studyType: "Bachelor"
+  - institution: "한꾹항공대학교"
+    area: "경기도 고양시 화전동"
+    studyType: "학사"
     startDate: "2011-03-01"
     endDate: "2019-02-22"
     gpa: ""
@@ -54,8 +54,8 @@ education:
       - "Mobile Programming"
       - "Web Programming"
   - institution: "Samsung SW Academy For Youth"
-    area: "Seocho-gu, Seoul-si"
-    studyType: "Completion"
+    area: "서울시 서초구"
+    studyType: "수료생"
     startDate: "2019-07-01"
     endDate: "2019-11-29"
     gpa: ""
@@ -63,18 +63,25 @@ education:
       - "Java Programming"
       - "Spring"
       - "VueJS"
-      - "algorithm"
+      - "Algorithm"
 awards:
-  - title: "Seoul public application Open source awards"
+  - title: "서울시 공공앱 오픈소스 공모전"
     date: "2017-12-19"
-    awarder: "Seoul-si"
+    awarder: "서울시"
     summary: >
-      summary
-  - title: "IoT"
+      서울시 오픈소스 활용 둘레길 안드로이드 어플리케이션 개발 (2017-09-02 ~ 2017-11-30)
+      성과 : 우수상
+      언어 및 기술 : JAVA(Android), SQLite
+      담당 업무 : 메인 기능 구현, 둘레길 public 자료 DB 처리, 기상청 RSS 정보 활용
+  - title: "IoT와 블록체인을 활용한 블랙박스 사고영상 관리 시스템"
     date: "2018-12-07"
     awarder: "Korea Aerospace University"
     summary: >
-      summary
+      종합설계프로젝트(2018.03 ~ 2018.11)
+      Block Chain을 활용한 블랙박스 영상 무결성 서비스 플랫폼 개발
+      성과 : 대상
+      개발 스킬 : ReactJS, Python, MongoDB
+      담당 업무 : 서비스 플랫폼 개발 (WEB), 라즈베리파이 HTTP 통신
 publications:
   - name: "사물인터넷 블록체인을 활용한 사고영상관리시스템"
     publisher: "Korea Copyright Commission (CORS)"
@@ -103,14 +110,9 @@ languages:
   - language: "Korean"
     fluency: "Native speaker"
   - language: "English"
-    fluency: "Only reading"
+    fluency: "Intermediate"
 interests:
   - name: "Wildlife"
     keywords:
       - "Ferrets"
       - "Unicorns"
-references:
-  - name: "Erlich Bachman"
-    reference: >
-      It is my pleasure to recommend Richard, his performance working as a consultant for Main St.
-      Company proved that he will be a valuable addition to any company.
