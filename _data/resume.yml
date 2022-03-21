@@ -111,7 +111,7 @@ languages:
     fluency: "Native speaker"
   - language: "English"
     fluency: "Intermediate"
-interests:
-  - name: ""
-    keywords:
-      - ""
+#interests:
+#  - name: ""
+#    keywords:
+#      - ""
