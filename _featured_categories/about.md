@@ -16,57 +16,71 @@ description: >
 
 ***
 <center>
-<span style="font-size:170%;font-weight:bold"> 박재오
-</span>
+<span style="font-size:170%;font-weight:bold"></span>
 </center>
-<center>MAJOR : Software engineering</center>
-<center>Korea Aerospace University</center>
-<center>19, Dosin-ro 64-gil, Yeongdeungpo-gu, Seoul, Republic of Korea</center>
+Hello! World! <br>
+I’m Jaeoh Park, or Gahusb! <br>
+Gahusb is my online name and doesn't mean anything. <br>
+I've just been using it since I was a kid. :) <br>
+I’m currently working as a Software developer at Lotte communication company, and previsouly was student of SSAFY(Samsung SW Academy For Youth). <br>
+I like to learn new things. The YouTube algorithm is related to information provision... <br>
+ <br>
+Pleaseh check my resume if you wish to know more about me. <br>
 
 ## Personal Data
 ---
-> 1992.12.23 대한민국,안양시,만안구 출생
-> 연락처: bgg8988@gmail.com
-> Github : [https://github.com/gahusb](https://github.com/gahusb)
+> 1992.12.23 대한민국,안양시,만안구 출생 <br>
+> 주소지 : 서울시 영등포구 신길동 <br>
+> 연락처: bgg8988@gmail.com <br>
+> Github : [https://github.com/gahusb](https://github.com/gahusb) <br>
+> LinkedIn : [https://www.linkedin.com/in/jaeoh-park-gahusb/](https://www.linkedin.com/in/jaeoh-park-gahusb/) <br>
 
 ## Education
 ---
-> Mar.2011 ~ Feb.2019 한국항공대학교
-> 소프트웨어 학과 (Software major)
+> Mar.2011 ~ Feb.2019 한국항공대학교 <br>
+> 소프트웨어 학과 (Software major) <br>
 
-> Jul.2019 ~ Nov.2019 SSAFY (Samsung SW Academy For Youth)
-> Web반 (Java, Spring, JavaScript, VueJS)
-
-## Research Interest
----
-* Computer Vision
-+ image Object Detection
-+ Vot
-+ Semantic/Instance Segmentation + Super Resolution
-* Machine Learning / Deep Learning + GAN
-    + Few-Shot Learning
-    + Meta Learning## Project
----
-* **Visual Object Tracking Using Plenoptic Image Sequences**
-* **FPV Swlf-driving RC Car**
-* **Anti Drone AI Robot using object detection**
-* **AI Mashroom Classificator App**
+> Jul.2019 ~ Nov.2019 SSAFY (Samsung SW Academy For Youth) <br>
+> Web반 (Java, Spring, JavaScript, VueJS) <br>
 
 ## Projects
-
+---
+Github : [https://github.com/gahusb](https://github.com/gahusb) <br>
 
 ## Awards
 ---
-[***2020 년 공개 SW 개발자 대회(주최:과학기술정보통신부, 주관:정보통신산업진흥원)[PM] 2020***](https://www.youtube.com/watch?v=ah9MZQ0PjMI&t=60s)
-- [BRONZE PRIZE](https://blog.naver.com/khw11044/222152408161)</a>
+[***2017 년 서울시 공공앱 오픈소스 대회(주최:서울시, 주관:서울시정보관리국)[PM] 2017***](https://www.wevity.com/index_university.php?c=find&s=_university&gbn=viewok&gp=1742&ix=17286)
+- [우수상](https://opengov.seoul.go.kr/sanction/15397439)</a>
+
+[***2018 년 종합설계프로젝트 공모 대회(주최:한국항공대학교, 주관:소프트웨어학과)[PM] 2018***](https://www.youtube.com/watch?v=ah9MZQ0PjMI&t=60s)
+- [대상](https://blog.naver.com/khw11044/222152408161)</a>
 
 ## Work Experiences
 ---
--2020. 01 – 2022. 03
-Visual Object Tracking Using Plenoptic Image Sequences, Hansung Univ – ETRI[https://github.com/khw11044/PlenOpticVot_Siamfc_2020](https://github.com/khw1 1044/PlenOpticVot_Siamfc_2020)
+-2020. 01. 03 – <br>
+버스 카드 요금 징수 단말기(AFC) 리눅스 시스템 S/W 연구 개발 <br>
+경기시내, 경남, 강원도 등 각 지역 별 정책적 기능 개발 <br>
+연동 장비 통신, 외부 어플리케이션 연동 개발 <br>
+
+>
+ - AFC Linux System Application 개발, 2020.09 ~ 2022.02, C/C++, QT <br>
+ 담당 업무 : 프로세스 개발, 주요 기능 개발, 지역별 추가 기능 개발 <br>
+ - 신규 AFC 단말기 개발 Project, 2020.09 ~ 2022.02, C/C++ <br>
+ 담당 업무 : 추가 기능 개발 <br>
+ - 경기 버스 승차벨 서비스 단말기 FW 개발, 2020.11 ~ 2020.12, C/C++ <br>
+ 담당 업무 : 경기버스정보앱 과 통신 전문 개발, 승차벨 프로세스 개발 <br>
+ - 현대 셔클 서비스 연동 단말기 신사업 개발, 2021.09 ~ 2021.12, C/C++ <br>
+ 담당 업무 : 셔클 앱과 통신 API 개발, 셔클 기능 프로세스 개발, 최적화 <br>
+ - AFC 성능 향상을 위한 테스트 레벨의 분석 설계 구축, 2021.04 ~ 2022.02, C/C++ <br>
+ 담당 업무 : 프로세스 성능 개선 테스트 개발, 무선 AP 성능 개선 테스트 개발, 연동장비 성능 개선 개발 <br>
 
 ## Skills and Certification
 ---
--Language : C/C++, Java, JavaScript
--FrameWork: Spring, VueJS
--Certification : 
+- Language : C/C++, Java, JavaScript <br>
+- FrameWork: Spring, VueJS <br>
+- Certification : 정보처리기사 (2018) <br>
+
+
+## Research Interest
+---
+* Web development
