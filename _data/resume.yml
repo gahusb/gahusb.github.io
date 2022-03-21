@@ -4,7 +4,7 @@
 basics:
   name: "박재오"
   label: "Programmer"
-  picture: "/assets/me/myPhoto.jpg"s
+  picture: "/assets/me/myPhoto.jpg"
   email: "bgg8988@gmail.com"
   phone: "010-3907-1392"
   website: "https://gahusb.github.io"
@@ -115,3 +115,8 @@ languages:
 #  - name: ""
 #    keywords:
 #      - ""
+references:
+  - name: "Erlich Bachman"
+    reference: >
+      It is my pleasure to recommend Richard, his performance working as a consultant for Main St.
+      Company proved that he will be a valuable addition to any company.
