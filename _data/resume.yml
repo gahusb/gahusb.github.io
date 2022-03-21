@@ -32,13 +32,18 @@ work:
     startDate: "2020-01-03"
     endDate: ""
     summary: >
-      Summary
+      3년차 리눅스 시스템 소프트웨어 개발자 <br>
+      버스 카드 요금 징수 단말기(AFC) 리눅스 시스템 S/W 연구 개발 <br>
+      경기시내, 경남, 강원도 등 각 지역 별 정책적 기능 개발 <br>
+      연동 장비 통신, 외부 어플리케이션 연동 개발 <br>
     highlights:
-      - "Built an algorithm for artist to detect if their music was violating copy right infringement laws"
-      - "Successfully won Techcrunch Disrupt"
-      - "Optimized an algorithm that holds the current world record for Weisman Scores"
+      - "AFC Linux System Application 개발, 2020.09 ~ 2022.02, C/C++, QT"
+      - "신규 AFC 단말기 개발 Project, 2020.09 ~ 2022.02, C/C++"
+      - "경기 버스 승차벨 서비스 단말기 FW 개발, 2020.11 ~ 2020.12, C/C++"
+      - "현대 셔클 서비스 연동 단말기 신사업 개발, 2021.09 ~ 2021.12, C/C++"
+      - "AFC 성능 향상을 위한 테스트 레벨의 분석 설계 구축, 2021.04 ~ 2022.02, C/C++"
 education:
-  - institution: "한꾹항공대학교"
+  - institution: "한국항공대학교"
     area: "경기도 고양시 화전동"
     studyType: "학사"
     startDate: "2011-03-01"
@@ -69,19 +74,19 @@ awards:
     date: "2017-12-19"
     awarder: "서울시"
     summary: >
-      서울시 오픈소스 활용 둘레길 안드로이드 어플리케이션 개발 (2017-09-02 ~ 2017-11-30)
-      성과 : 우수상
-      언어 및 기술 : JAVA(Android), SQLite
-      담당 업무 : 메인 기능 구현, 둘레길 public 자료 DB 처리, 기상청 RSS 정보 활용
+      서울시 오픈소스 활용 둘레길 안드로이드 어플리케이션 개발 (2017-09-02 ~ 2017-11-30) <br>
+      성과 : 우수상 <br>
+      언어 및 기술 : JAVA(Android), SQLite <br>
+      담당 업무 : 메인 기능 구현, 둘레길 public 자료 DB 처리, 기상청 RSS 정보 활용 <br>
   - title: "IoT와 블록체인을 활용한 블랙박스 사고영상 관리 시스템"
     date: "2018-12-07"
     awarder: "Korea Aerospace University"
     summary: >
-      종합설계프로젝트(2018.03 ~ 2018.11)
-      Block Chain을 활용한 블랙박스 영상 무결성 서비스 플랫폼 개발
-      성과 : 대상
-      개발 스킬 : ReactJS, Python, MongoDB
-      담당 업무 : 서비스 플랫폼 개발 (WEB), 라즈베리파이 HTTP 통신
+      종합설계프로젝트(2018.03 ~ 2018.11) <br>
+      Block Chain을 활용한 블랙박스 영상 무결성 서비스 플랫폼 개발 <br>
+      성과 : 대상 <br>
+      개발 스킬 : ReactJS, Python, MongoDB <br>
+      담당 업무 : 서비스 플랫폼 개발 (WEB), 라즈베리파이 HTTP 통신 <br>
 publications:
   - name: "사물인터넷 블록체인을 활용한 사고영상관리시스템"
     publisher: "Korea Copyright Commission (CORS)"
@@ -115,8 +120,8 @@ languages:
 #  - name: ""
 #    keywords:
 #      - ""
-references:
-  - name: "Erlich Bachman"
-    reference: >
-      It is my pleasure to recommend Richard, his performance working as a consultant for Main St.
-      Company proved that he will be a valuable addition to any company.
+#references:
+#  - name: "Erlich Bachman"
+#    reference: >
+#      It is my pleasure to recommend Richard, his performance working as a consultant for Main St.
+#      Company proved that he will be a valuable addition to any company.
