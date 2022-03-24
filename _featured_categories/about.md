@@ -41,7 +41,12 @@ Pleaseh check my resume if you wish to know more about me. <br>
 > 소프트웨어 학과 (Software major) <br>
 
 > Jul.2019 ~ Nov.2019 SSAFY (Samsung SW Academy For Youth) <br>
-> Web반 (Java, Spring, JavaScript, VueJS) <br>
+> 1학기 816시간의 코딩 집중 교육 <br>
+> Web반 <br>
+> - JAVA(자바 프로그래밍 기초, 알고리즘, JSP, Spring)
+> - WEB 개발(JavaScript, jQuery, Vue.js, Node.js, Rest API, MySQL)
+> - 컴퓨팅 사고력(SW 문제 해결 기본/응용/심화)
+> - 종합 프로젝트(안전 식품 관리 웹 서비스)
 
 ## Projects
 ---
