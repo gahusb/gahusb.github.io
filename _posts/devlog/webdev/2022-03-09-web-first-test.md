@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Web-first-test-pageㄷ
+title: Web-first-test-page
 category: devlog
 tags: webdev
 image: 
