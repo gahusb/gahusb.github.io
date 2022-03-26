@@ -12,6 +12,7 @@ theme_color: '#ccc'
 description: >
   깃 저장소 변경하면서 잠깐 쉬는 타임에 끄적여보는 일상 기록
 invert_sidebar: true
+comments: true
 ---
 
 # 일상 기록 - 깃 저장소 변경

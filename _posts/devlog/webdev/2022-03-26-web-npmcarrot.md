@@ -14,6 +14,7 @@ description: >
   틸트와 캐럿에 대해서 설명하고, 내용을 이해해보자.
 invert_sidebar: true
 sitemap: false
+comments: true
 ---
 
 # 틸트 대신해서 캐럿을 사용하기

@@ -12,6 +12,7 @@ theme_color: '#ccc'
 description: >
   정렬 방식 정리하기
 invert_sidebar: true
+comments: true
 ---
 
 # 각 언어별 sort에 대한 정리
