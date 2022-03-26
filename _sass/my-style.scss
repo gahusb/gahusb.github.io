@@ -1,19 +1,31 @@
 .clap-count {
-    @extend h4;
-    color: var(--accent-color);
-    display: none;
-  
-    svg {
-      height: 1em;
-      vertical-align: middle;
-      width: 1em;
-    }
-  
-    .flat {
-      fill: var(--body-bg);
-    }
-  
-    .outline {
-      fill: var(--accent-color);
-    }
+  @extend h4;
+  color: var(--accent-color);
+  display: none;
+
+  svg {
+    height: 1em;
+    vertical-align: middle;
+    width: 1em;
+  }
+
+  .flat {
+    fill: var(--body-bg);
+  }
+
+  .outline {
+    fill: var(--accent-color);
+  }
+}
+
+.utterances {
+  max-width: 100%;
+}
+
+.giscus, .giscus-frame {
+  width: 100%;
+}
+
+.giscus-frame {
+  border: none;
 }

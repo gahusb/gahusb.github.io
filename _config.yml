@@ -181,7 +181,30 @@ kramdown:
 # Set which comment system to use
 comments:
   # 'disqus' / 'giscus' / 'utterances' are available
+  # 'disqus', I don’t want to link disqus if you are not using it. _includes/head/links-static.html
   provider:            giscus
+
+# You must install utterances github app before use.(https://github.com/apps/utterances)
+# Make sure all variables are set properly. Check below link for detail.
+# https://utteranc.es/
+utterances:
+  repo:                "gahusb/gahusb.github.io"
+  issue-term:          "pathname"
+  label:               "Comments"
+  theme:               "dark-blue"
+
+# You must install giscus github app before use.(https://github.com/apps/giscus)
+# Make sure all variables are set properly. Check below link for detail.
+# https://giscus.vercel.app/
+giscus:
+  repo:                "gahusb/gahusb.github.io"
+  repo-id:             "[your-repo-id]"
+  category:            "Comments"
+  category-id:         "[your-category-id]"
+  mapping:             "pathname"
+  reaction-enabled:    "1"
+  theme:               "dark_dimmed"
+  crossorigin:         "anonymous"
 
 # Setting a disqus shortname will enable the comment section on
 # pages with `comments: true` in the front matter.
