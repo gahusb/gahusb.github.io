@@ -205,7 +205,6 @@ giscus:
   reaction-enabled:    "1"
   data-emit-metadata:  "0"
   theme:               "dark"
-  data-lang:           "ko"
   crossorigin:         "anonymous"
 
 # Setting a disqus shortname will enable the comment section on
