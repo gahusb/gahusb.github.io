@@ -198,12 +198,14 @@ utterances:
 # https://giscus.vercel.app/
 giscus:
   repo:                "gahusb/gahusb.github.io"
-  repo-id:             "[your-repo-id]"
+  repo-id:             "R_kgDOG-Hl-g"
   category:            "Comments"
-  category-id:         "[your-category-id]"
+  category-id:         "DIC_kwDOG-Hl-s4CORoi"
   mapping:             "pathname"
   reaction-enabled:    "1"
-  theme:               "dark_dimmed"
+  data-emit-metadata:  "0"
+  theme:               "dark"
+  data-lang:           "ko"
   crossorigin:         "anonymous"
 
 # Setting a disqus shortname will enable the comment section on
