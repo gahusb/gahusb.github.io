@@ -98,4 +98,4 @@ sitemap: false
 ---
 
 ### 플러터 갤러리
-![flutterGallery](https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/2Kn8/image/z1tIuX5m0Uwx1bGWih2fIAn_mrY.jpg "플러터 갤러리")(https://gallery.flutter.dev/#/)
+[![flutterGallery](https://t1.daumcdn.net/thumb/R720x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/2Kn8/image/z1tIuX5m0Uwx1bGWih2fIAn_mrY.jpg "플러터 갤러리")](https://gallery.flutter.dev/#/)

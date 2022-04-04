@@ -1,7 +1,7 @@
 ---
 layout: tag-list
 type: tag
-title: flutter
+title: Flutter
 slug: flutter
 category: devlog
 sidebar: true
