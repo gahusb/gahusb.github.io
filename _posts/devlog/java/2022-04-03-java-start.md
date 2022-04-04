@@ -14,6 +14,7 @@ description: >
   JAVA 공부했던 내용에 대해서 잊기전에 재 정리 해본다.
 invert_sidebar: true
 sitemap: false
+comments: false
 ---
 
 # JAVA에 대해서
