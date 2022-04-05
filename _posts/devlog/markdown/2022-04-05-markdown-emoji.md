@@ -4,7 +4,7 @@ title: Markdown 이모지
 image:
 subtitle: Markdown 이모지 정리
 category: devlog
-tags: java
+tags: markdown
 accent_image: 
   background: url('/assets/img/blog/jeremy-bishop@0,5x.jpg') center/cover
   overlay: false
