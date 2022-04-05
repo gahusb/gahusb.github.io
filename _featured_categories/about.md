@@ -6,8 +6,9 @@ sidebar: true
 image: /assets/img/me/myPhoto.jpg
 order: 2
 description: >
-  프론트엔드 개발자를 꿈꾸고 있는 3 년차 개발자 입니다.
+  임베디드 소프트웨어 3 년차 개발자 입니다.
   배움을 주저하지 않고 성장을 중요시 합니다.
+  현재 프론트엔드로의 전향을 위해 공부하고 있습니다.
 ---
 
 # About
@@ -88,4 +89,3 @@ Github : [https://github.com/gahusb](https://github.com/gahusb) <br>
 
 ## Research Interest
 ---
-* Web development
