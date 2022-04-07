@@ -6,7 +6,7 @@ subtitle: flutter에서 사용되는 dart에 대해 알아보기
 category: devlog
 tags: flutter
 accent_image: 
-  background: url('/assets/img/blog/jeremy-bishop@0,5x.jpg') center/cover
+  background: url('/assets/img/blog/caleb-george.jpg') center/cover
   overlay: false
 accent_color: '#ccc'
 theme_color: '#ccc'

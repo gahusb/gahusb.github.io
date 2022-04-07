@@ -6,7 +6,7 @@ subtitle: java 메모리 구조에 대해
 category: devlog
 tags: java
 accent_image: 
-  background: url('/assets/img/blog/jeremy-bishop@0,5x.jpg') center/cover
+  background: url('/assets/img/blog/caleb-george.jpg') center/cover
   overlay: false
 accent_color: '#ccc'
 theme_color: '#ccc'

@@ -6,7 +6,7 @@ subtitle: java에 대한 정리 내용
 category: devlog
 tags: java
 accent_image: 
-  background: url('/assets/img/blog/jeremy-bishop@0,5x.jpg') center/cover
+  background: url('/assets/img/blog/caleb-george.jpg') center/cover
   overlay: false
 accent_color: '#ccc'
 theme_color: '#ccc'

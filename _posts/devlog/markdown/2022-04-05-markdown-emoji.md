@@ -6,7 +6,7 @@ subtitle: Markdown 이모지 정리
 category: devlog
 tags: markdown
 accent_image: 
-  background: url('/assets/img/blog/jeremy-bishop@0,5x.jpg') center/cover
+  background: url('/assets/img/blog/caleb-george.jpg') center/cover
   overlay: false
 accent_color: '#ccc'
 theme_color: '#ccc'

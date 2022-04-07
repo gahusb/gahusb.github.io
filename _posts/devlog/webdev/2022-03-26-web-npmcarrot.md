@@ -6,7 +6,7 @@ subtitle: 틸트대신 캐럿을 사용해야 하는 내용의 이해
 category: devlog
 tags: webdev
 accent_image: 
-  background: url('/assets/img/blog/jeremy-bishop@0,5x.jpg') center/cover
+  background: url('/assets/img/blog/caleb-george.jpg') center/cover
   overlay: false
 accent_color: '#ccc'
 theme_color: '#ccc'
