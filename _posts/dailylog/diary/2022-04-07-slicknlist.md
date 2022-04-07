@@ -194,7 +194,7 @@ About 위에 위치하여 작성자 소개 위에 위치하도록 한다.
 위 처럼 youtube 영상의 id를 가져와서 표출 할 수 있도록 만들고
 
 ```markdown
-{% include youtubePlayer.html id="{youtube ID}" %}
+{% include components/youtubePlayer.html id="{youtube ID}" %}
 ```
 게시글 원하는 위치에 youtube id를 넣어주면 된다.
 
@@ -202,7 +202,7 @@ About 위에 위치하여 작성자 소개 위에 위치하도록 한다.
 
 위와 같이 `watch?v=` 이후에 오는 id를 가져다가 사용한다.
 
-{% include components/youtubePlayer.html id="0TNFb5zgpbg&list=PL3NgX4uqPt40T1iNoiN9z8CErtWHm06El&ab_channel=토니펀_Tonyfun" %}
+{% include components/youtubePlayer.html id='0TNFb5zgpbg&list=PL3NgX4uqPt40T1iNoiN9z8CErtWHm06El&ab_channel=토니펀_Tonyfun' %}
 
 ---
 
