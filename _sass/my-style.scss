@@ -72,7 +72,7 @@ pre {
 }
 
 .page-control > div {
-  max-width: 50%;
+  max-width: 80%;
 }.page-control {
   height: 100%;
   display: flex;
@@ -81,18 +81,18 @@ pre {
 }
 
 .page-control > div {
-  max-width: 50%;
+  max-width: 80%;
 }
 
 .button {
-  box-shadow:inset 0px 1px 0px 0px #ffffff;
-  background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
-  background-color:#ffffff;
+  box-shadow:inset 0px 1px 0px 0px #666666;
+  background:linear-gradient(to bottom, #666666 5%, #f6f6f6 100%);
+  background-color:#666666;
   border-radius:16px;
   border:3px solid #dcdcdc;
   display:inline-block;
   cursor:pointer;
-  color:#666666;
+  color:#ffffff;
   font-family:Arial;
   font-size:18px;
   font-weight:bold;
