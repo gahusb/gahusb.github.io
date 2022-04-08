@@ -17,6 +17,10 @@ sitemap: false
 ---
 
 # JAVA의 메모리? JAVA의 메모리 구조에 대한 이해
+
+* toc
+{:toc .large-only}
+
  - JAVA의 메모리 구조에 대해서 이해해보는 시간을 가져본다.
 
 ## JVM이란?

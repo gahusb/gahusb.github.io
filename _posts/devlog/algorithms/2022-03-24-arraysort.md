@@ -16,6 +16,10 @@ comments: true
 ---
 
 # 각 언어별 sort에 대한 정리
+
+* toc
+{:toc .large-only}
+
 sort는 자주 사용하면서도 나중에 사용 할때마다 조금씩 헷갈리는 부분이라 정리해둘까 한다.
 
 ## JAVA

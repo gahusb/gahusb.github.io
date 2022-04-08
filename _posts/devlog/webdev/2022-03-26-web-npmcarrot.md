@@ -18,6 +18,10 @@ comments: true
 ---
 
 # 틸트 대신해서 캐럿을 사용하기
+
+* toc
+{:toc .large-only}
+
 ## 틸트(~)
 일단 틸트(`~`)에 대해서 알아보자. <br>
 [NPM문서](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#dependencies)에 따르면 npm을 사용할 때 `package.json`에서 버전 명시를 다음과 같이 할 수 있다.
