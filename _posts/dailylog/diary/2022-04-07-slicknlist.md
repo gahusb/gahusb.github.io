@@ -26,12 +26,12 @@ invert_sidebar: true
 slick 사이트에 들어가서 `get it now`를 눌러 다운로드 받아주어 slick 폴더를 `/assets/css/slick`에 복사>붙여넣기 해준다.
 
 그리고 scss를 수정하여 표출 가능하도록 변경!   
-> _sass/my-style.scss
+> _sass/my-style.scss   
 ```scss
 
 ```
 
-게시글 원하는 위치에 아래와 같이 넣어주면 된다.
+게시글 원하는 위치에 아래와 같이 넣어주면 된다.   
 ```html
 <div class="main_center">
     <div><img src= "/assets/img/blog/hydejack-8.jpg" style="width: 700px; height: auto;"></div>
@@ -58,6 +58,7 @@ slick 사이트에 들어가서 `get it now`를 눌러 다운로드 받아주어
     });
 </script>
 ```
+
 .slick() 안의 옵션을 원하는대로 설정하여 사용 할 수 있다.
 
 <div class="main_center">
