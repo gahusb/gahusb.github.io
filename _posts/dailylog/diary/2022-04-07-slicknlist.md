@@ -26,12 +26,15 @@ invert_sidebar: true
 slick 사이트에 들어가서 `get it now`를 눌러 다운로드 받아주어 slick 폴더를 `/assets/css/slick`에 복사>붙여넣기 해준다.
 
 그리고 scss를 수정하여 표출 가능하도록 변경!   
+
 > _sass/my-style.scss   
+
 ```scss
 
 ```
 
-게시글 원하는 위치에 아래와 같이 넣어주면 된다.   
+게시글 원하는 위치에 아래와 같이 넣어주면 된다.
+
 ```html
 <div class="main_center">
     <div><img src= "/assets/img/blog/hydejack-8.jpg" style="width: 700px; height: auto;"></div>
@@ -89,16 +92,19 @@ slick 사이트에 들어가서 `get it now`를 눌러 다운로드 받아주어
 ---
 ## 게시글 목차 만들기
 h1 타이틀 바로 아래에
+
 ```
 * toc
 {:toc .large-only}
 ```
+
 를 추가하여 헤더를 기준으로 목차 생성
 
 ---
 ## 페이지 버튼 만들기
 
 > _include/components/page-button.html   
+
 ```html
 <div class="page-control">
     <div>
@@ -115,6 +121,7 @@ h1 타이틀 바로 아래에
 ```
 
 > _layouts/post.html   
+
 ```console
 {% include components/page-button.html %}
 ```
@@ -122,7 +129,9 @@ h1 타이틀 바로 아래에
 About 위에 위치하여 작성자 소개 위에 위치하도록 한다.
 
 원하는 스타일대로 변경을 위해서 다음과 같이 작업해준다.   
+
 > _sass/my-style.scss   
+
 ```scss
 .page-control {
   height: 100%;
@@ -177,6 +186,7 @@ About 위에 위치하여 작성자 소개 위에 위치하도록 한다.
 ## 게시글에 유튜브플레이어 보기
 
 > _includes/components/youtubePlayer.html   
+
 ```html
 <style>
     .embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; }
@@ -226,11 +236,13 @@ TARGET URL에 나의 블로그 주소를 입력하고, Options에서 여러 설�
 만약 조회수 가장 오른쪽에 생성되는 링크모양 아이콘이 싫다면
 
 > _sass/my-style.scss
+
 ```scss
 a.external::after, a::after {
   display: none;
 }
 ```
+
 를 추가하여 제거 할 수 있다.
 
 ---
