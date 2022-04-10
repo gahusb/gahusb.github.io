@@ -6,7 +6,7 @@ subtitle: flutter 개발 환경 구축
 category: devlog
 tags: flutter
 accent_image: 
-  background: url('/assets/img/blog/caleb-george.jpg') center/cover
+  background: url('/assets/img/algo_img/coding_sidebar.jpg') center/cover
   overlay: false
 accent_color: '#ccc'
 theme_color: '#ccc'
