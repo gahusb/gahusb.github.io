@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 소고기 먹부림
+title: 블로그 기능 추가
 image: 
 category: dailylog
 tags: diary
@@ -233,5 +233,4 @@ a.external::after, a::after {
 를 추가하여 제거 할 수 있다.
 
 ---
-
 

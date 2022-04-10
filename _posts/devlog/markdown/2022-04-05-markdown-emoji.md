@@ -110,7 +110,7 @@ GitHub supports emoji!
 | :godmode: :godmode: | :hurtrealbad: :hurtrealbad: | :rage1: :rage1: |
 | :rage2: :rage2: | :rage3: :rage3: | :rage4: :rage4: | 
 | :suspect: :suspect: | :trollface: :trollface: |
- 
+
 
 ## [Nature]
 ☀️ :sunny:	☔️ :umbrella:	☁️ :cloud:
@@ -152,7 +152,7 @@ GitHub supports emoji!
 🌎 :earth_americas:	🌏 :earth_asia:	🌋 :volcano:
 🌌 :milky_way:	⛅️ :partly_sunny:	:octocat: :octocat:
 :shipit: :squirrel:	 	 
- 
+
 
 ## [Objects]
 🎍 :bamboo:	💝 :gift_heart:	🎎 :dolls:
@@ -242,7 +242,7 @@ GitHub supports emoji!
 🍌 :banana:	🍐 :pear:	🍍 :pineapple:
 🍠 :sweet_potato:	🍆 :eggplant:	🍅 :tomato:
 🌽 :corn:
- 
+
 
 ## [Places]
 🏠 :house:	🏡 :house_with_garden:	🏫 :school:
@@ -281,7 +281,7 @@ GitHub supports emoji!
 🇫🇷 :fr:	🇪🇸 :es:	🇮🇹 :it:
 🇷🇺 :ru:	🇬🇧 :gb:	🇬🇧 :uk:
 🇩🇪 :de:	 	 
- 
+
 
 ## [Symbols]
 1️⃣ :one:	2️⃣ :two:	3️⃣ :three:
