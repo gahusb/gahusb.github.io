@@ -97,7 +97,7 @@ h1 타이틀 바로 아래에
 ---
 ## 페이지 버튼 만들기
 
-> _include/components/page-button.html
+> _include/components/page-button.html   
 ```html
 <div class="page-control">
     <div>
@@ -113,17 +113,15 @@ h1 타이틀 바로 아래에
 </div>
 ```
 
-> _layouts/post.html
-```
+> _layouts/post.html   
+```console
 {% include components/page-button.html %}
-
-{% include components/about.html %}
 ```
 
 About 위에 위치하여 작성자 소개 위에 위치하도록 한다.
 
-원하는 스타일대로 변경을 위해서 다음과 같이 작업해준다.
-> _sass/my-style.scss
+원하는 스타일대로 변경을 위해서 다음과 같이 작업해준다.   
+> _sass/my-style.scss   
 ```scss
 .page-control {
   height: 100%;
@@ -177,7 +175,7 @@ About 위에 위치하여 작성자 소개 위에 위치하도록 한다.
 
 ## 게시글에 유튜브플레이어 보기
 
-> _includes/components/youtubePlayer.html
+> _includes/components/youtubePlayer.html   
 ```html
 <style>
     .embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; }
@@ -191,18 +189,20 @@ About 위에 위치하여 작성자 소개 위에 위치하도록 한다.
     </iframe>
 </div>
 ```
+
 위 처럼 youtube 영상의 id를 가져와서 표출 할 수 있도록 만들고
 
-```markdown
-{% include components/youtubePlayer.html id="{youtube ID}" %}
+```console
+`{% include components/youtubePlayer.html id="{youtube ID}" %}`
 ```
+
 게시글 원하는 위치에 youtube id를 넣어주면 된다.
 
 ![image](https://likelion.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F72612a68-022b-424b-8ee1-4600408d2b93%2FUntitled.png?table=block&id=b894acab-60c6-4de6-b0c2-7e0c15a7c844&spaceId=c69962b0-3951-485b-b10a-5bb29576bba8&width=1220&userId=&cache=v2)
 
 위와 같이 `watch?v=` 이후에 오는 id를 가져다가 사용한다.
 
-{% include components/youtubePlayer.html id='0TNFb5zgpbg&list=PL3NgX4uqPt40T1iNoiN9z8CErtWHm06El&ab_channel=토니펀_Tonyfun' %}
+{% include components/youtubePlayer.html id='0TNFb5zgpbg' %}
 
 ---
 
