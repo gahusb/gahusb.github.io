@@ -5,7 +5,7 @@ image:
 category: dailylog
 tags: diary
 accent_image: 
-  background: url('/assets/img/daily/diary_sumnail.jpeg') center/cover
+  background: url('/assets/img/daily/diary_sidebar.jpg') center/cover
   overlay: false
 accent_color: '#ccc'
 theme_color: '#ccc'

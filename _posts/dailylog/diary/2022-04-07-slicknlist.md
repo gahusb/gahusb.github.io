@@ -5,7 +5,7 @@ image:
 category: dailylog
 tags: diary
 accent_image: 
-  background: url('/assets/img/daily/diary_sumnail.jpeg') center/cover
+  background: url('/assets/img/daily/diary_sidebar.jpg') center/cover
   overlay: false
 accent_color: '#ccc'
 theme_color: '#ccc'
@@ -25,29 +25,6 @@ invert_sidebar: true
 [Slick](https://kenwheeler.github.io/slick/)
 slick 사이트에 들어가서 `get it now`를 눌러 다운로드 받아주어 slick 폴더를 `/assets/css/slick`에 복사>붙여넣기 해준다.
 
-그리고 scss를 수정하여 표출 가능하도록 변경!   
-
-> assests/css/slick/slick-theme.css   
-
-```css
-.slick-prev:before
-{
-    content: url(left.png);
-}
-[dir='rtl'] .slick-prev:before
-{
-    content: url(right.png);
-}
-
-.slick-next:before
-{
-    content: url(right.png);
-}
-[dir='rtl'] .slick-next:before
-{
-    content: url(left.png);
-}
-```
 
 게시글 원하는 위치에 아래와 같이 넣어주면 된다.
 
@@ -105,6 +82,31 @@ slick 사이트에 들어가서 `get it now`를 눌러 다운로드 받아주어
         });
     });
 </script>
+
+그리고 scss를 수정하여 좌우로 화살표를 넣어서 표출 하는것도 가능하도록 변경 할 수 있다.   
+이미지는 별도로 구해서 사용하시면 됩니다.   
+
+> assests/css/slick/slick-theme.css   
+
+```css
+.slick-prev:before
+{
+    content: url(left.png);
+}
+[dir='rtl'] .slick-prev:before
+{
+    content: url(right.png);
+}
+
+.slick-next:before
+{
+    content: url(right.png);
+}
+[dir='rtl'] .slick-next:before
+{
+    content: url(left.png);
+}
+```
 
 ---
 ## 게시글 목차 만들기
