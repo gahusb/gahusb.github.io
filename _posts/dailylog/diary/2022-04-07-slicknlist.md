@@ -27,19 +27,35 @@ slick 사이트에 들어가서 `get it now`를 눌러 다운로드 받아주어
 
 그리고 scss를 수정하여 표출 가능하도록 변경!   
 
-> _sass/my-style.scss   
+> assests/css/slick/slick-theme.css   
 
-```scss
+```css
+.slick-prev:before
+{
+    content: url(left.png);
+}
+[dir='rtl'] .slick-prev:before
+{
+    content: url(right.png);
+}
 
+.slick-next:before
+{
+    content: url(right.png);
+}
+[dir='rtl'] .slick-next:before
+{
+    content: url(left.png);
+}
 ```
 
 게시글 원하는 위치에 아래와 같이 넣어주면 된다.
 
 ```html
 <div class="main_center">
-    <div><img src= "/assets/img/blog/hydejack-8.jpg" style="width: 700px; height: auto;"></div>
-    <div><img src="/assets/img/blog/hydejack-8.png" style="width: 700px; height: auto;"></div>
-    <div><img src= "/assets/img/blog/hydejack-9-dark.jpg" style="width: 700px; height: auto;"></div>
+    <div><img src= "/assets/img/blog/hydejack-8.jpg" style="width: auto; height: 500px;"></div>
+    <div><img src="/assets/img/blog/hydejack-8.png" style="width: auto; height: 500px;"></div>
+    <div><img src= "/assets/img/blog/hydejack-9-dark.jpg" style="width: auto; height: 500px;"></div>
 </div>
 <script>
     $(document).ready(function() {
@@ -65,10 +81,11 @@ slick 사이트에 들어가서 `get it now`를 눌러 다운로드 받아주어
 .slick() 안의 옵션을 원하는대로 설정하여 사용 할 수 있다.
 
 <div class="main_center">
-    <div><img src= "/assets/img/blog/hydejack-8.jpg" style="width: 700px; height: auto;"></div>
-    <div><img src="/assets/img/blog/hydejack-8.png" style="width: 700px; height: auto;"></div>
-    <div><img src= "/assets/img/blog/hydejack-9-dark.jpg" style="width: 700px; height: auto;"></div>
+    <div><img src= "/assets/img/blog/hydejack-8.jpg" style="width: auto; height: 500px;"></div>
+    <div><img src="/assets/img/blog/hydejack-8.png" style="width: auto; height: 500px;"></div>
+    <div><img src= "/assets/img/blog/hydejack-9-dark.jpg" style="width: auto; height: 500px;"></div>
 </div>
+
 <script>
     $(document).ready(function() {
         $('.main_center').slick({
@@ -109,12 +126,12 @@ h1 타이틀 바로 아래에
 <div class="page-control">
     <div>
         {% if page.previous.url %}
-        <a id="prev" class="button" href="{{ page.previous.url }}">&laquo; {{ page.previous.title }}</a>
+        <a id="prev" class="w-btn-outline w-btn-gray-outline" href="{{ page.previous.url }}">&laquo; {{ page.previous.title }}</a>
         {% endif %}
     </div>
     <div>
         {% if page.next.url %}
-        <a id="next" class="button" href="{{ page.next.url }}">{{ page.next.title }} &raquo;</a>
+        <a id="next" class="w-btn-outline w-btn-gray-outline" href="{{ page.next.url }}">{{ page.next.title }} &raquo;</a>
         {% endif %}
     </div>
 </div>
@@ -153,31 +170,35 @@ About 위에 위치하여 작성자 소개 위에 위치하도록 한다.
   max-width: 50%;
 }
 
-.button {
-  box-shadow:inset 0px 1px 0px 0px #ffffff;
-  background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
-  background-color:#ffffff;
-  border-radius:16px;
-  border:3px solid #dcdcdc;
-  display:inline-block;
-  cursor:pointer;
-  color:#666666;
-  font-family:Arial;
-  font-size:18px;
-  font-weight:bold;
-  padding:6px 100px;
-  text-decoration:none;
-  text-shadow:0px 1px 0px #ffffff;
+.w-btn-outline {
+  position: relative;
+  padding: 15px 30px;
+  border-radius: 15px;
+  font-family: "paybooc-Light", sans-serif;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.25s;
 }
 
-.button:hover {
-  background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
-  background-color:#f6f6f6;
+.w-btn-outline:hover {
+  letter-spacing: 2px;
+  transform: scale(1.2);
+  cursor: pointer;
 }
 
-.button:active {
-  position:relative;
-  top:1px;
+.w-btn-outline:active {
+  transform: scale(1.5);
+}
+
+.w-btn-gray-outline {
+  border: 3px solid #a3a1a1;
+  color: #6e6e6e;
+}
+
+.w-btn-gray-outline:hover {
+  background-color: #a3a1a1;
+  color: #e3dede;
 }
 ```
 
