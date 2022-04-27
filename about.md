@@ -48,9 +48,11 @@ Github : [https://github.com/gahusb](https://github.com/gahusb) <br>
 ---
 [***2017 년 서울시 공공앱 오픈소스 대회(주최:서울시, 주관:서울시정보관리국)[PM] 2017***](https://www.wevity.com/index_university.php?c=find&s=_university&gbn=viewok&gp=1742&ix=17286)
 - [우수상](https://opengov.seoul.go.kr/sanction/15397439)</a>
+- [영상](https://youtu.be/8Z7QPYdOIX0)</a>
 
 [***2018 년 종합설계프로젝트 공모 대회(주최:한국항공대학교, 주관:소프트웨어학과)[PM] 2018***](https://www.youtube.com/watch?v=ah9MZQ0PjMI&t=60s)
 - [대상](https://blog.naver.com/khw11044/222152408161)</a>
+- [설계포스터](https://drive.google.com/file/d/1VDP-umjaiOhGo_josRyr89C_QsdwsWQ6/view?usp=sharing)</a>
 
 ## Work Experiences
 ---
