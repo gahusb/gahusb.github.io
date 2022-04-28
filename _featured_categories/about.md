@@ -59,13 +59,13 @@ Github : [https://github.com/gahusb](https://github.com/gahusb) <br>
 - [우수상](https://opengov.seoul.go.kr/sanction/15397439)
 - [영상](https://youtu.be/8Z7QPYdOIX0)
 
-[***2018 년 종합설계프로젝트 공모 대회(주최:한국항공대학교, 주관:소프트웨어학과)[PM] 2018***](https://www.youtube.com/watch?v=ah9MZQ0PjMI&t=60s)
+***2018 년 종합설계프로젝트 공모 대회(주최:한국항공대학교, 주관:소프트웨어학과)[PM] 2018***
 - [대상](https://drive.google.com/file/d/1Negm9A5uheQbb79pnvjWb7p-KBBS8I6t/view?usp=sharing)
 - [설계포스터](https://drive.google.com/file/d/1VDP-umjaiOhGo_josRyr89C_QsdwsWQ6/view?usp=sharing)
 
 ## Work Experiences
 ---
--2020. 01. 03 – <br>
+-2020. 01. 03 ~ 재직중 <br>
 버스 카드 요금 징수 단말기(AFC) 리눅스 시스템 S/W 연구 개발 <br>
 경기시내, 경남, 강원도 등 각 지역 별 정책적 기능 개발 <br>
 연동 장비 통신, 외부 어플리케이션 연동 개발 <br>
