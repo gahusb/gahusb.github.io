@@ -43,6 +43,7 @@ GitHub supports emoji!
 
 # 마크다운 이모지 종류
 ## [People]
+
 |   1   |   2   |   3   |
 | :---: | :---: | :---: |
 | :bowtie: <code>:bowtie:</code> | 😄 <code>:smile:</code> | 😆 <code>:laughing:</code> |

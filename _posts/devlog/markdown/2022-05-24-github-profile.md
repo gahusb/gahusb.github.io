@@ -50,7 +50,7 @@ README.md 파일 생성하도록 체크하라는 내용이다. 바로 체크하�
 
 이 부분은 'capsule-render'라는 오픈API를 사용하였다.
 
-https://github.com/kyechan99/capsule-render
+[https://github.com/kyechan99/capsule-render](https://github.com/kyechan99/capsule-render)
 
 이 오픈 소스는 awesome 하게도 크기, 모양, 문구 등을 자신의 취향에 맞게 선택하여 사용할 수 있고, 나의 프로필을 더욱 눈에 띄게 만들어줄 수 있다.
 
@@ -104,11 +104,11 @@ const jaeoh = {
 
 뱃지(Badge)를 사용하여 나의 기술 스택을 이쁘게 표현할 수 있다.
 
-https://shields.io/
+[https://shields.io/](https://shields.io/)
 
 위 shields라는 곳에서 내가 원하는 형태로 뱃지를 만들어서 사용할 수도 있고,
 
-https://simpleicons.org/
+[https://simpleicons.org/](https://simpleicons.org/)
 
 위 simpleicons라는 사이트에서 내가 원하는 기술 스택에 해당하는 아이콘을 받아서 뱃지로 만들어 사용할 수 있다.
 
@@ -120,7 +120,7 @@ https://simpleicons.org/
 
 이런 나만의 뱃지를 만들기 귀찮다면,
 
-https://cocoon1787.tistory.com/689
+[https://cocoon1787.tistory.com/689](https://cocoon1787.tistory.com/689)
 
 이런 뱃지들을 만들어서 공유하는 오픈 소스를 가져다가 사용할 수 있다.
 
@@ -159,10 +159,11 @@ https://cocoon1787.tistory.com/689
 
 중간중간 markdown에 나타나는 emoji의 경우 아래 글을 참고해서 사용하시면 됩니다.
 
-https://gahusb.github.io/devlog/markdown-emoji.html
+[https://gahusb.github.io/devlog/markdown-emoji.html](https://gahusb.github.io/devlog/markdown-emoji.html)
 
 또한 더 다양한 사람들의 github profile을 참고해서 나만의 프로필을 꾸미고 싶다면
 
-https://github.com/abhisheknaiidu/awesome-github-profile-readme
+[https://github.com/abhisheknaiidu/awesome-github-profile-readme](https://github.com/abhisheknaiidu/awesome-github-profile-readme
+)
 
 위의 사이트에서 여러 사람들의 awesome한 read.me를 참고하여 나의 프로필에 적용해보자 😊
