@@ -62,7 +62,7 @@ README.md 파일 생성하도록 체크하라는 내용이다. 바로 체크하�
 
 이것을 나타내주기 위해서 Hit라는 오픈 소스를 사용했다.
 
-https://hits.seeyoufarm.com/
+[https://hits.seeyoufarm.com/](https://hits.seeyoufarm.com/)
 
 ![Hit](/assets/img/dev/hit-badge.png)
 
