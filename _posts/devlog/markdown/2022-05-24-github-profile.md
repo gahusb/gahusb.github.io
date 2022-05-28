@@ -11,7 +11,7 @@ accent_image:
 accent_color: '#ccc'
 theme_color: '#ccc'
 description: >
-  Github에서 제공하는 profile 꾸미기를 이용하여 나만의 독특한 profile 만들기
+  Github에서 제공하는 profile 꾸미기를 이용하여 나만의 독특한 프로필s 만들기
 invert_sidebar: true
 sitemap: false
 ---
