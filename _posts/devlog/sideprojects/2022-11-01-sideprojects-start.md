@@ -35,7 +35,7 @@ comments: true
 
 ## 리스트 업
 중간 중간 생각나는대로 리스트업을 업데이트 할 예정인데 우선 정리한것들은 이렇다.
-![listup](https://gahusb.synology.me:5001/mo/sharing/HNNBWudZ6#/item_22837?_k=5i35mc)
+![listup](https://gahusb.synology.me:5001/webapi/entry.cgi/idea-listup.png?id=22837&cache_key=%2222837_1667281101%22&type=%22unit%22&size=%22xl%22&api=%22SYNO.Foto.Thumbnail%22&method=%22get%22&version=2&SynoToken=n6Jzf0.5aRtTg)
 
 NAS Note에 정리한 아이디어의 일부인데 진작에 좀 활용할껄 너무 늦은거 아니니.. <br />
 
