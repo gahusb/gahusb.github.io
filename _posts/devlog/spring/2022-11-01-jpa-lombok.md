@@ -69,7 +69,7 @@ dependencies {
 
 여기서 의문점이 좀 들었다. <br />
 Maven과 Gradle의 차이점은 무엇일까? 바로 알아보자 <br />
--> [Maven과 Gradle]() 
+-> [Maven과 Gradle](https://gahusb.github.io/devlog/maven-gradle.html)
 
 ## 2. 데이터베이스 설정
 > application.properties
@@ -190,7 +190,7 @@ public class MemberService {
 
   // INSERT
   public MemberVo insert(MemberVo memberVo) throws Exception {
-    return memberRepository.insert(memberVo);
+    return memberRepository.save(memberVo);
   }
 
   // SELECT LIST
@@ -209,7 +209,7 @@ public class MemberService {
 
     MemberVo resultMember = null;
     if(e.isPresent()) {
-      resultMember = memberRepository.insert(memberVo);
+      resultMember = memberRepository.save(memberVo);
     }
     return resultMember;
   }

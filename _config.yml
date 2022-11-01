@@ -140,6 +140,7 @@ defaults:
 
   # You can use the following to enable comments on all posts.
   - scope:
+      path:            _posts/
       type:            posts
     values:
       comments:        true
@@ -149,16 +150,19 @@ defaults:
   # `jekyll-seo-tag` will mark collection outputs as `BlogPosting`,
   # but we want them to be `WebPage`s:
   - scope:
+      path:            _projects/
       type:            projects
     values:
       seo:
         type:          WebPage
   - scope:
+      path:            _featured_categories/
       type:            featured_categories
     values:
       seo:
         type:          WebPage
   - scope:
+      path:            _featured_tags/
       type:            featured_tags
     values:
       seo:
