@@ -4,7 +4,7 @@ title: ReactJS
 image:
 subtitle: 리액트를 활용하여 영화 웹 서비스 개발
 category: devlog
-tags: webdev
+tags: react
 accent_image: 
   background: url('/assets/img/web_dev/webdev_sidebar.jpeg') center/cover
   overlay: false
