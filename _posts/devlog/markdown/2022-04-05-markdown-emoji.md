@@ -344,7 +344,7 @@ GitHub supports emoji!
 💮 :white_flower:	💯 :100:	✔️ :heavy_check_mark:
 ☑️ :ballot_box_with_check:	🔘 :radio_button:	🔗 :link:
 ➰ :curly_loop:	〰️ :wavy_dash:	〽️ :part_alternation_mark:
-🔱 :trident:	:black_square: :black_square:	:white_square: :white_square:
+🔱 :trident:
 ✅ :white_check_mark:	🔲 :black_square_button:	🔳 :white_square_button:
 ⚫️ :black_circle:	⚪️ :white_circle:	🔴 :red_circle:
 🔵 :large_blue_circle:	🔷 :large_blue_diamond:	🔶 :large_orange_diamond:
