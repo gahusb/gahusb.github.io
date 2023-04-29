@@ -95,9 +95,10 @@ PCB는 다른 프로세스들이 쉽게 접근할 수 없고, Kernel 영역에 �
 
 PCB는 프로세스 식별자, 프로세서(CPU) 상태 정보, 프로세스 제어 정보를 담고 있다. <br />
 ![PCB](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FtIPDr%2FbtqUnKRlmuB%2FDJIs4kFAwQE5ySaiJz25Kk%2Fimg.png)
-[출처](https://yoongrammer.tistory.com/52)
 
 ![PCB](https://velog.velcdn.com/images/curiosity806/post/06d141f2-ff5a-4855-a064-b90f218bc0e2/image.png)
+
+[출처](https://yoongrammer.tistory.com/52)
 
  - 포인터 : 프로세스의 현재 위치를 저장하는 포인터 정보
  - 프로세스 상태 : 프로세스의 각 상태를 저장
