@@ -65,4 +65,3 @@ TCP는 OSI 7 Layer 중에 4 계층에 해당한다. IP가 그저 목적지를 �
 <center>`TCP Header의 구조(출처: Wikipedia)`</center>
 
 TCP는 IP의 정보들뿐만 아니라 Port를 이용하여 연결한다. 한 쪽 단말(Endpoint)에 도착한 데이터가 어느 입구(Port)로 들어가야 하는지 알아야 연결을 시도할 수 있기 때문이다. <br />
-위의 그림을 보았을 때, 
