@@ -1,6 +1,6 @@
 # Gahusb's Blog
 
-## [About Me](https://gahusb.github.io/about/)
+## About Me [Click Blog](https://gahusb.github.io/about/)
 
 Hello, there!<br>
 This blog is to post whatever I feel like to.<br>
