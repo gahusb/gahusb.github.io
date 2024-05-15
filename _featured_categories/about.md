@@ -1,14 +1,13 @@
 ---
 layout: about
 type: post
-title: About me
+title: AboutMe
 sidebar: true
 image: /assets/img/me/myPhoto.jpg
 order: 2
 description: >
-  임베디드 소프트웨어 3 년차 개발자 입니다.
+  5 년차 서버 개발자 입니다.
   배움을 주저하지 않고 성장을 중요시 합니다.
-  현재 프론트엔드로의 전향을 위해 공부하고 있습니다.
 ---
 
 # About
@@ -19,22 +18,66 @@ description: >
 <center>
 <span style="font-size:170%;font-weight:bold"></span>
 </center>
-Hello! World! <br>
-I’m Jaeoh Park, or Gahusb! <br>
-Gahusb is my online name and doesn't mean anything. <br>
-I've just been using it since I was a kid. :) <br>
-I’m currently working as a Software developer at Lotte communication company, and previsouly was student of SSAFY(Samsung SW Academy For Youth). <br>
-I like to learn new things. The YouTube algorithm is related to information provision... <br>
- <br>
-Pleaseh check my resume if you wish to know more about me. <br>
+
+> Hello! World!
+I’m Jaeoh Park, or Gahusb!  
+Gahusb is my online name and doesn't mean anything.  
+I've just been using it since I was a kid.  :)  
+I’m currently working as a Software developer at Lotte communication company, and previsouly was student of SSAFY(Samsung SW Academy For Youth).  
+I like to learn new things. The YouTube algorithm is related to information provision.  
+Please check my resume if you wish to know more about me.
+
 
 ## Personal Data
 ---
 > 1992.12.23 대한민국,안양시,만안구 출생 <br>
-> 주소지 : 서울시 영등포구 신길동 <br>
+> 주소지 : 서울시 관악구 인헌동 <br>
 > 연락처: bgg8988@gmail.com <br>
 > Github : [https://github.com/gahusb](https://github.com/gahusb) <br>
 > LinkedIn : [https://www.linkedin.com/in/jaeoh-park-gahusb/](https://www.linkedin.com/in/jaeoh-park-gahusb/) <br>
+
+## Work Experiences
+---
+### 현대오토에버
+- 2023.02.27 ~ 재직중 <br/>
+내비게이션 교통 정보 국내 서버 개발 담당 <br/>
+  - 교통정보 대외 제공 기술 개발
+    - 2023.09 ~ 2024.05
+    - C++
+    - 담당 업무 : AWS SDK CPP 사용 대외 업체에 교통정보 S3 제공
+
+### 롯데정보통신
+- 2020.01.03 ~ 2023.02.17 <br>
+버스 카드 요금 징수 단말기(AFC) 리눅스 시스템 S/W 연구 개발  
+경기시내, 경남, 강원도 등 각 지역 별 정책적 기능 개발  
+연동 장비 통신, 외부 어플리케이션 연동 개발
+  - AFC Linux System Application 개발
+    - 2020.09 ~ 2022.02
+    - C/C++, QT
+    - 담당 업무 : 프로세스 개발, 주요 기능 개발, 지역별 추가 기능 개발
+  - 신규 AFC 단말기 개발
+    - 2020.09 ~ 2022.02
+    - C/C++
+    - 담당 업무 : 추가 기능 개발
+  - 경기 버스 승차벨 서비스 단말기 FW 개발
+    - 2020.11 ~ 2020.12
+    - C/C++
+    - 담당 업무 : 경기버스정보앱 과 통신 전문 개발, 승차벨 프로세스 개발
+  - 현대 셔클 서비스 연동 단말기 신사업 개발
+    - 2021.09 ~ 2021.12
+    - C/C++
+    - 담당 업무 : 셔클 앱과 통신 API 개발, 셔클 기능 프로세스 개발
+  - AFC 성능 향상을 위한 테스트 레벨의 분석 설계 구축
+    - 2021.04 ~ 2022.02
+    - C/C++
+    - 담당 업무 : 프로세스 성능 개선 테스트 개발, 무선 AP 성능 개선 테스트 개발, 연동장비 성능 개선 개발
+
+## Skills and Certification
+---
+- Language : C/C++, Java, JavaScript <br/>
+- Tool : Git, Jira, Bitbucket, Bamboo, Qt <br/>
+- FrameWork: Spring <br/>
+- Certification : 정보처리기사, SQLD <br/>
 
 ## Education
 ---
@@ -62,32 +105,6 @@ Github : [https://github.com/gahusb](https://github.com/gahusb) <br>
 *2018 년 종합설계프로젝트 공모 대회(주최:한국항공대학교, 주관:소프트웨어학과)*
 - [대상](https://drive.google.com/file/d/1Negm9A5uheQbb79pnvjWb7p-KBBS8I6t/view?usp=sharing)
 - [설계포스터](https://drive.google.com/file/d/1VDP-umjaiOhGo_josRyr89C_QsdwsWQ6/view?usp=sharing)
-
-## Work Experiences
----
--2020. 01. 03 ~ 재직중 <br>
-버스 카드 요금 징수 단말기(AFC) 리눅스 시스템 S/W 연구 개발 <br>
-경기시내, 경남, 강원도 등 각 지역 별 정책적 기능 개발 <br>
-연동 장비 통신, 외부 어플리케이션 연동 개발 <br>
-
->
- - AFC Linux System Application 개발, 2020.09 ~ 2022.02, C/C++, QT <br>
- 담당 업무 : 프로세스 개발, 주요 기능 개발, 지역별 추가 기능 개발 <br>
- - 신규 AFC 단말기 개발 Project, 2020.09 ~ 2022.02, C/C++ <br>
- 담당 업무 : 추가 기능 개발 <br>
- - 경기 버스 승차벨 서비스 단말기 FW 개발, 2020.11 ~ 2020.12, C/C++ <br>
- 담당 업무 : 경기버스정보앱 과 통신 전문 개발, 승차벨 프로세스 개발 <br>
- - 현대 셔클 서비스 연동 단말기 신사업 개발, 2021.09 ~ 2021.12, C/C++ <br>
- 담당 업무 : 셔클 앱과 통신 API 개발, 셔클 기능 프로세스 개발, 최적화 <br>
- - AFC 성능 향상을 위한 테스트 레벨의 분석 설계 구축, 2021.04 ~ 2022.02, C/C++ <br>
- 담당 업무 : 프로세스 성능 개선 테스트 개발, 무선 AP 성능 개선 테스트 개발, 연동장비 성능 개선 개발 <br>
-
-## Skills and Certification
----
-- Language : C/C++, Java, JavaScript, dart(for Flutter) <br>
-- FrameWork: Spring, VueJS <br>
-- Certification : 정보처리기사 <br>
-
 
 ## Research Interest
 ---

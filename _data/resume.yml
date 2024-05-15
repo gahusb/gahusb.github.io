@@ -10,11 +10,11 @@ basics:
   website: "https://gahusb.github.io"
   summary: >
     지속 가능한 성장을 추구하는 주니어 개발자 입니다.<br>
-    저는 현재 롯데정보통신 조직의 캐시비기술연구소 팀으로 개발 담당에서 일하고 있는 3년차 입니다. <br>
-    주요 업무는 버스 카드 자동 요금 징수 단말기(AFC) Linux System S/W 개발 & 지역 별 프로세스 기능 및 교통 카드 결제 로직 개발을 하고 있습니다.
+    저는 현재 현대오토에버 조직의 교통정보개발 팀으로 국내 서버 개발 담당으로 일하고 있는 5년차 개발자 입니다. <br>
+    주요 업무는 교통 정보 생성 서버 개발 & 서버 유지 관리를 담당 하고 있습니다.
   location:
-    address: "Yeongdeungpo-gu, Seoul, Republic of Korea"
-    postalCode: "07352"
+    address: "Gwanwak-gu, Seoul, Republic of Korea"
+    postalCode: "08797"
     city: "Seoul"
     countryCode: "KR"
     region: "Seoul"
@@ -26,13 +26,24 @@ basics:
       username: "gahusb"
       url: "https://www.instagram.com/gahusb/"
 work:
+  - company: "현대오토에버"
+    position: "책임"
+    website: "https://www.hyundai-autoever.com/kor/main/index.do"
+    startDate: "2023-02-27"
+    endDate: ""
+    summary: >
+      교통 정보 서버 국내 개발 <br>
+      교통 정보 속도 생성 로직 개발 <br>
+      교통 서버 유지 관리 및 모니터링 <br>
+    highlights:
+      - "AWS 교통정보 대외 제공 개발, 2023-09 ~ 2024-05, C++"
   - company: "롯데정보통신"
     position: "선임"
     website: "https://www.ldcc.co.kr/"
     startDate: "2020-01-03"
-    endDate: ""
+    endDate: "2023-02-17"
     summary: >
-      3년차 리눅스 시스템 소프트웨어 개발자 <br>
+      리눅스 시스템 소프트웨어 개발 <br>
       버스 카드 요금 징수 단말기(AFC) 리눅스 시스템 S/W 연구 개발 <br>
       경기시내, 경남, 강원도 등 각 지역 별 정책적 기능 개발 <br>
       연동 장비 통신, 외부 어플리케이션 연동 개발 <br>
