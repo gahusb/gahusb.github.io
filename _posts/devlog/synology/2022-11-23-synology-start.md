@@ -50,7 +50,7 @@ NAS는 Network Attached Storage의 약자로 네트워크에 연결된 저장장
 > - Note Station을 통한 나만의 노트 정리
 > - 웹 서비스 구동
 > - MariaDB 구동
-> - Lotto 추첨 안드로이드 앱을 위한 Spring 서버 (사이드 프로젝트)
+> - 안드로이드 앱을 위한 Spring 서버 (사이드 프로젝트)
 > - Docker 활용하기
 
 이제와서 봐도 참 알차게 사용한것 같아서 뿌듯하네! <br />
