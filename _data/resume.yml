@@ -105,23 +105,28 @@ publications:
     website: "https://www.cros.or.kr/psnsys/cmmn/infoPage.do?w2xPath=/ui/twc/sch/regInfSerc/regInfSercDtl.xml"
     summary: "등록번호 : C-2019-011792"
 skills:
-  - name: "Web Development"
-    level: "Junior1"
+  - name: "C/C++"
+    level: "Junior5"
     keywords:
-      - "Javascript"
-      - "VueJS"
+      - "Server"
+      - "Embedded"
+      - "IPC"
   - name: "JAVA"
-    level: "Junior4"
+    level: "Junior3"
     keywords:
       - "JVM"
       - "Object oriented"
       - "JSP"
       - "Spring"
-  - name: "C/C++"
-    level: "Junior4"
+  - name: "Git"
+    level: "Junior5"
     keywords:
-      - "Embedded"
-      - "IPC"
+      - "cooperative work"
+  - name: "Web Development"
+    level: "Junior1"
+    keywords:
+      - "Javascript"
+      - "VueJS"
 languages:
   - language: "Korean"
     fluency: "Native speaker"
