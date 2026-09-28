@@ -1,6 +1,966 @@
----
-layout: blog
-title: Home
-description: >
-  Gahusb's blog. 어제보다 더 나은 나.
----
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>박재오 — 서버 개발자</title>
+<meta name="description" content="백엔드 개발자 박재오의 포트폴리오 — Claude API 를 서비스에 통합하고, AI 에이전트 협업과 로컬 모델 운영을 직접 설계한 프로젝트들.">
+<link rel="canonical" href="https://gahusb.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="박재오 — 서버 개발자">
+<meta property="og:description" content="백엔드 개발자 박재오의 포트폴리오 — Claude API 를 서비스에 통합하고, AI 에이전트 협업과 로컬 모델 운영을 직접 설계한 프로젝트들.">
+<meta property="og:url" content="https://gahusb.github.io/">
+<meta name="color-scheme" content="dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Gothic+A1:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════════════════════
+   src/ui/tokens.css — Instrument 디자인 토큰 (단일 소스)
+
+   spec: docs/superpowers/specs/2026-09-09-instrument-dashboard-design.md
+
+   🔴 이 파일의 색은 전부 **실행해서 검증한 값**이다. 눈으로 고르지 않았다.
+      · 텍스트 대비: WCAG 비율을 표면 #101113 기준으로 계산
+      · 차트 8색: dataviz `validate_palette.js --mode dark --surface #131316`
+        전 항목 PASS (인접쌍 CVD ΔE 8.4 / normal 19.3 / 대비 3:1↑)
+      바꾸려면 검증기를 다시 돌린다.
+
+   컨셉 — 계기판
+      1. 판은 무채색이다. 배경·표면·테두리·텍스트에 hue 가 없다
+      2. 색은 UI 가 아니라 데이터가 쓴다
+      3. 구획은 채움이 아니라 눈금선(1px)으로 한다
+      4. 수치는 계기다 — 전부 tabular mono
+      5. 백라이트는 하나다 — 브라스, UI 크롬 전용
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+    /* ── 잉크 스케일 ─────────────────────────────────────────────────────
+       무채. 아주 옅은 청록 캐스트를 넣어 순수 회색의 죽은 느낌을 피한다.
+       주석의 비율은 표면 --ink-880(#101113) 대비 실측 WCAG 값이다. */
+    --ink-950: #08090a;   /* 앱 바닥 */
+    --ink-900: #0c0d0f;   /* 사이드바·바닥 패널 */
+    --ink-880: #101113;   /* 기본 표면(패널) */
+    --ink-850: #141518;   /* 융기 표면(호버·팝오버) */
+    --ink-800: #191a1e;   /* 입력 필드 */
+    --ink-750: #1f2126;   /* 강한 헤어라인 */
+    --ink-700: #272a30;   /* 테두리          1.31:1 */
+    --ink-600: #343841;   /* 강조 테두리      1.61:1 */
+    --ink-500: #474c57;   /* 비활성          2.19:1 */
+    --ink-400: #646a78;   /* 보조 라벨(대형)  3.49:1 ← 본문 금지 */
+    --ink-300: #8b929f;   /* 흐린 본문       6.04:1 */
+    --ink-200: #b3b9c4;   /* 부제           9.58:1 */
+    --ink-100: #d7dbe2;   /* 본문          13.60:1 */
+    --ink-050: #eef0f4;   /* 강조 텍스트·수치 16.56:1 */
+
+    /* ── 표면 (의미 이름) ─────────────────────────────────────────────── */
+    --surf-floor:   var(--ink-950);
+    --surf-sunken:  var(--ink-900);
+    --surf:         var(--ink-880);
+    --surf-raised:  var(--ink-850);
+    --surf-input:   var(--ink-800);
+
+    /* ── 텍스트 (의미 이름) ───────────────────────────────────────────────
+       🔴 --txt-faint 는 3.49:1 이라 본문에 쓰면 WCAG AA(4.5:1) 미달이다.
+          14px 이상 라벨·캡션까지만. 문장에는 --txt-dim 이하로 내려가지 말 것. */
+    --txt-strong: var(--ink-050);
+    --txt:        var(--ink-100);
+    --txt-sub:    var(--ink-200);
+    --txt-dim:    var(--ink-300);
+    --txt-faint:  var(--ink-400);
+    --txt-off:    var(--ink-500);
+
+    /* ── 눈금선 — 구획은 채움이 아니라 선으로 한다 ────────────────────── */
+    --rule:        var(--ink-700);
+    --rule-strong: var(--ink-600);
+    --rule-faint:  var(--ink-750);
+
+    /* ── 브라스 — 백라이트 한 점 ──────────────────────────────────────────
+       🔴 UI 크롬 전용이다. 활성 인디케이터 · 포커스 링 · 라이브 점.
+          차트 시리즈 · 등락 · 데이터 배지에 쓰지 말 것.
+          하락색(#e2496e)과 normal-vision ΔE 17.4 로 벌려 둔 값이다. */
+    --brass:       #d9a441;   /* 8.40:1 */
+    --brass-dim:   rgba(217, 164, 65, 0.42);
+    --brass-ghost: rgba(217, 164, 65, 0.12);
+
+    /* ── 등락 — 🔴 한국 시장 관례다. 상승=빨강, 하락=파랑 ─────────────────
+       글로벌 관례(상승=초록)와 반대이며, **이 저장소가 10곳에서 이미 쓰는 값**이다
+       (stock-common/stock-market/stock-report/StockWidget/TodayDetail).
+       CEO 가 매일 읽는 의미라 뒤집으면 안 된다.
+
+       검증도 같은 방향을 가리켰다(validate_palette.js, dark, surface #131316):
+         빨강 #f04452 ↔ 파랑 #3b82f6 : CVD ΔE 24.9(protan) / normal 34.5  → PASS
+         (참고) 초록 #2ea87b ↔ 크림슨 #e2496e : deutan ΔE 2.6            → FAIL
+       즉 한국 관례가 색약 구분에서도 훨씬 낫다.
+
+       그래도 부호(+/-)는 항상 붙인다 — 흑백 인쇄·스크린샷·강제 색 모드에서는
+       색 채널 자체가 없다. 비용이 0 이라 뺄 이유가 없다. ui/Delta 가 강제한다. */
+    --up:        #f04452;   /* 5.09:1 — 상승(한국 관례) */
+    --down:      #3b82f6;   /* 5.14:1 — 하락(한국 관례) */
+    --up-ghost:   rgba(240, 68, 82, 0.12);
+    --down-ghost: rgba(59, 130, 246, 0.12);
+    --flat:      var(--ink-400);
+
+    /* ── 상태 — 예약어. 아이콘+라벨 동반 필수, 시리즈색으로 재사용 금지 ───
+       ⚠️ --st-serious/-critical 은 크림슨 계열이고 --up(상승 빨강)과 다르다.
+          같은 빨강 계열이라 헷갈릴 수 있지만 **채널이 다르다** —
+          상태색은 배지(아이콘+라벨)로만 나오고, 등락은 부호 붙은 수치로만 나온다.
+          이 규칙을 깨고 상태색을 수치에 칠하지 말 것. */
+    --st-good:     #2ea87b;
+    --st-warn:     #e08340;   /* 브라스와 헷갈리지 않게 주황으로 밀었다 */
+    --st-serious:  #e2496e;
+    --st-critical: #c3304f;
+    --st-info:     #5aa9e6;
+    --st-good-ghost:     rgba(46, 168, 123, 0.12);
+    --st-warn-ghost:     rgba(224, 131, 64, 0.12);
+    --st-serious-ghost:  rgba(226, 73, 110, 0.12);
+    --st-critical-ghost: rgba(195, 48, 79, 0.14);
+    --st-info-ghost:     rgba(90, 169, 230, 0.12);
+
+    /* ── 차트 카테고리 8색 ────────────────────────────────────────────────
+       🔴 순서 고정. 순환 금지. 9번째 시리즈는 새 색이 아니라 「기타」다.
+          산점도·버블처럼 전 쌍이 인접해지는 형태는 앞 3슬롯까지만. */
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+    --series-4: #c98500;
+    --series-5: #d55181;
+    --series-6: #008300;
+    --series-7: #9085e9;
+    --series-8: #e66767;
+
+    /* ── 타이포 ───────────────────────────────────────────────────────────
+       Archivo  가변(wdth 62-125 / wght 100-900) — 라틴 + 디스플레이
+       Gothic A1                                — 한글 본문
+       JetBrains Mono                           — 모든 수치·시각·코드
+
+       🔴 수치는 예외 없이 --font-mono + tabular-nums.
+          폴링으로 값이 바뀔 때 자릿수가 흔들리면 계기가 아니라 광고판이다. */
+    --font-sans:    'Archivo', 'Gothic A1', system-ui, sans-serif;
+    --font-display: 'Archivo', 'Gothic A1', system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+    --tracking-label: 0.14em;   /* 대문자 라벨 */
+    --tracking-tight: -0.02em;  /* 큰 제목 */
+
+    /* ── 반경 — 계기판은 각지다. 20px 쿠션 없음 ──────────────────────── */
+    --r-xs: 2px;
+    --r-sm: 3px;
+    --r-md: 5px;
+    --r-lg: 8px;
+    --r-pill: 999px;
+
+    /* ── 간격 ─────────────────────────────────────────────────────────── */
+    --sp-1: 4px;
+    --sp-2: 8px;
+    --sp-3: 12px;
+    --sp-4: 16px;
+    --sp-5: 20px;
+    --sp-6: 24px;
+    --sp-8: 32px;
+    --sp-10: 40px;
+
+    /* ── 그림자 — 거의 없다. 층은 선으로 나눈다 ───────────────────────── */
+    --shadow-pop:  0 8px 28px rgba(0, 0, 0, 0.55);
+    --shadow-over: 0 24px 64px rgba(0, 0, 0, 0.7);
+
+    /* ── 레이아웃 ─────────────────────────────────────────────────────── */
+    --sidebar-w:      232px;
+    --sidebar-w-mini: 64px;
+    --strip-h:        44px;
+    --bottom-nav-h:   64px;
+    --safe-bottom:    env(safe-area-inset-bottom, 0px);
+
+    /* ── 모션 — 계기는 요란하지 않다 ──────────────────────────────────── */
+    --ease:        cubic-bezier(0.2, 0.8, 0.2, 1);
+    --ease-snap:   cubic-bezier(0.32, 0.9, 0.28, 1);
+    --dur-fast:    110ms;
+    --dur:         160ms;
+    --dur-slow:    240ms;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   레거시 토큰 브리지 — 55개 → **7개** (2026-09-11)
+
+   2026-09-09 에는 62개 CSS 파일이 옛 이름을 참조해, 한 파일도 안 건드리고 톤을
+   옮기기 위해 별칭 55개를 뒀다. 이제 소비처를 직접 고쳐 48개를 걷어냈다.
+   남은 7개는 페이지 액센트(`--accent`, `--accent-*`)뿐이다.
+
+   ── 🔴 별칭이 가려 놓고 있던 것 ────────────────────────────────────────
+   별칭은 「한 파일도 안 건드리고 톤을 옮기는」 데는 성공했지만, **옛 색이 손으로
+   적힌 자리는 못 건드린다.** 걷어내면서 그게 드러났다.
+
+   그림자 — `--shadow-sm`·`--shadow-card`·`--shadow-inset` 은 값이 `none` 이었다.
+      소비처 31곳 중 **4곳은 선언 자체가 무효라 브라우저가 통째로 버리고 있었다**:
+      `box-shadow: 0 4px 20px …, var(--shadow-inset)` 이 `…, none` 으로 풀리는데
+      `none` 은 단독으로만 쓸 수 있다. 그리려던 그림자가 안 그려진 지 오래였고
+      **에러가 안 나서 아무도 몰랐다.**
+      → 되살리지 않고 지웠다. 계기판은 그림자 대신 눈금선으로 구획한다.
+      `--shadow-md`/`--shadow-lg` 는 실값이라 본이름(`--shadow-pop`/`--shadow-over`)
+      으로 소비처를 옮겼다.
+
+   네온 — `--neon-cyan` 은 브라스를 가리켰지만, **짝이 되는 raw 시안이 옆 줄에
+      그대로 남아 있었다.** 「브라스 점 + 시안 후광」(`.re-timeline__dot--start`),
+      「브라스 테두리 + 시안 배경」(`.pf-cash-edit-input`) 처럼 색이 갈려 있었다.
+      별칭째 지우면서 그 raw 값들도 같이 정리했다.
+      브라스를 쓰면 안 되는 3곳(타임라인 점·키커 라벨·중립 태그 = 전부 **데이터**다)은
+      각각 `--st-info`·`--txt-faint`·무채로 따로 판단했다.
+
+   ⚠️ 새 코드는 이 별칭을 쓰지 말 것. 위의 의미 토큰을 직접 쓴다.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+
+    --accent:        var(--brass);
+
+    /* 페이지 액센트 — 채도를 낮춰 계기판 판면에 얹었다.
+       🔴 아이콘과 4px 인디케이터에만 쓴다. 배경·테두리·텍스트 금지. */
+    --accent-blog:         #9d8ec9;
+    --accent-lotto:        #3f9e78;
+    --accent-stock:        #5b8fc4;
+    --accent-realestate:   #c26a78;
+    --accent-subscription: #c26a78;
+    --accent-lab:          #b8963f;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   src/ui/base.css — 리셋 + 요소 기본값
+
+   tokens.css 를 먼저 읽은 상태를 전제한다(index.css 가 순서를 보장).
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    height: 100%;
+    scroll-behavior: smooth;
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+}
+
+body {
+    height: 100%;
+    overflow: hidden;
+    background-color: var(--surf-floor);
+    color: var(--txt);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.6;
+    font-synthesis-weight: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── 눈금 텍스처 ──────────────────────────────────────────────────────────
+   계기 판면의 미세한 결. 24px 격자를 거의 안 보이는 밝기로 깐다.
+   배경 그라디언트를 대신하는 것이라 스크롤에 고정한다. */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+        linear-gradient(to right,  rgba(255, 255, 255, 0.014) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.014) 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+
+/* ── 스크롤바 — 계기의 여백을 잡아먹지 않게 얇게 ────────────────────────── */
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+    background: var(--ink-700);
+    border-radius: var(--r-pill);
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--ink-600); background-clip: content-box; }
+* { scrollbar-width: thin; scrollbar-color: var(--ink-700) transparent; }
+
+/* ── 선택 · 포커스 ───────────────────────────────────────────────────────── */
+
+::selection {
+    background: var(--brass-ghost);
+    color: var(--txt-strong);
+}
+
+:focus-visible {
+    outline: 1px solid var(--brass);
+    outline-offset: 2px;
+    border-radius: var(--r-xs);
+}
+
+/* ── 타이포 ──────────────────────────────────────────────────────────────
+   Archivo 가변의 wdth 축을 제목에서 넓힌다 — 산업 규격 라벨의 인상. */
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-stretch: 108%;
+    color: var(--txt-strong);
+    line-height: 1.2;
+    letter-spacing: var(--tracking-tight);
+}
+
+p { line-height: 1.7; }
+
+a { color: inherit; text-decoration: none; }
+a:hover { color: var(--txt-strong); }
+
+img { max-width: 100%; display: block; }
+
+/* ── 수치는 계기다 ───────────────────────────────────────────────────────
+   숫자를 쓰는 모든 곳에 이 클래스를 건다. 자릿수가 흔들리지 않는다. */
+.num,
+.tabular {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1, 'zero' 1;
+    letter-spacing: -0.01em;
+}
+
+/* ── 폼 요소 ─────────────────────────────────────────────────────────────── */
+
+button { font-family: var(--font-sans); }
+
+input, textarea, select {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    background: var(--surf-input);
+    border: 1px solid var(--rule);
+    color: var(--txt);
+    border-radius: var(--r-sm);
+    transition: border-color var(--dur-fast) var(--ease),
+                background var(--dur-fast) var(--ease);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--brass-dim);
+    background: var(--ink-850);
+    outline: none;
+}
+
+input::placeholder,
+textarea::placeholder { color: var(--txt-off); }
+
+select option {
+    background: var(--surf-raised);
+    color: var(--txt);
+}
+
+/* 수치 입력은 mono 로 */
+input[type='number'],
+input[inputmode='numeric'] {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ── 배경 스크롤 잠금 — hooks/useScrollLock 이 body 에 붙인다 ──────────────
+   🔴 이 앱의 스크롤 주체는 body 가 아니라 `.site-main` 이다(App.css).
+      둘 다 잠가야 전체화면 오버레이 뒤가 손가락을 따라 움직이지 않는다.
+      body 만 잠근 구현이 세 군데 있었다 — 만화 리더만 고쳐져 있었고
+      여행 앨범·MobileSheet 는 새고 있었다(2026-09-11 에 한 곳으로 모았다). */
+body.is-scroll-locked { overflow: hidden; }
+body.is-scroll-locked .site-main { overflow: hidden; }
+
+/* ── 모바일 ─────────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+    body {
+        overflow: auto;
+        padding-bottom: calc(var(--bottom-nav-h) + var(--safe-bottom));
+    }
+    /* 모바일은 스크롤 주체가 달라 fixed 텍스처가 튄다 — 끈다 */
+    body::before { display: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   프로젝트 지도 — /projects
+   도면집 결: 시트마다 번호 붙은 표제란 + 도면 + 요점. 색은 ui/tokens.css 만 쓴다(새 hex 없음).
+   브라스는 크롬(번호·선택)과 「모델 호출」 노드의 의미에만.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.pj-root { display: grid; gap: var(--sp-8); min-width: 0; }
+.pj-root .tnum { font-variant-numeric: tabular-nums; }
+.pj-h2 { margin: 0; font-size: 18px; color: var(--txt-strong); }
+.pj-hint { margin: 4px 0 var(--sp-3); color: var(--txt-dim); font-size: 13px; }
+
+/* ── 머리 수치 ───────────────────────────────────────────────────────── */
+.pj-totals {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    margin: 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+}
+.pj-totals > div { display: grid; gap: 2px; padding: var(--sp-3) var(--sp-5) var(--sp-3) 0; margin-right: var(--sp-5); }
+.pj-totals > div + div:not(.pj-totals__src) { padding-left: var(--sp-5); border-left: 1px solid var(--rule-faint); }
+.pj-totals dt { color: var(--txt-dim); font-size: 12px; }
+.pj-totals dd { margin: 0; color: var(--txt-strong); font-size: 24px; font-weight: 600; }
+.pj-totals__src { margin-left: auto !important; margin-right: 0 !important; align-self: center; padding-right: 0 !important; }
+.pj-totals__src a { color: var(--txt-sub); font-size: 13px; }
+
+/* ── 목차 ────────────────────────────────────────────────────────────── */
+.pj-toc {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+    border-top: 1px solid var(--rule);
+}
+.pj-toc__item {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    min-height: 48px;
+    padding: var(--sp-2) var(--sp-3);
+    border: 0;
+    border-bottom: 1px solid var(--rule-faint);
+    background: transparent;
+    color: var(--txt);
+    font: inherit;
+    font-size: 14px;
+    text-align: left;
+    cursor: pointer;
+}
+.pj-toc__item:hover { background: var(--surf-raised); color: var(--txt-strong); }
+.pj-toc__no { color: var(--brass); font-family: var(--font-mono); font-size: 12px; }
+
+/* ── 시트 ────────────────────────────────────────────────────────────── */
+.pj-sheets { display: grid; gap: var(--sp-10); }
+.pj-map, .pj-sheet { scroll-margin-top: calc(var(--strip-h) + var(--sp-4)); }
+.pj-sheet:focus, .pj-map:focus { outline: none; }
+.pj-sheet:focus-visible { outline: 1px solid var(--brass-dim); outline-offset: 8px; }
+.pj-sheet {
+    display: grid;
+    gap: var(--sp-5);
+    padding-top: var(--sp-5);
+    border-top: 2px solid var(--rule-strong);
+}
+
+.pj-title {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: var(--sp-5);
+    align-items: start;
+}
+.pj-title__no {
+    color: var(--brass);
+    font-family: var(--font-mono);
+    font-size: 32px;
+    line-height: 1;
+    font-weight: 500;
+}
+.pj-title__main h2 { margin: 0 0 6px; font-size: 22px; color: var(--txt-strong); }
+.pj-title__main p { margin: 0; color: var(--txt-sub); font-size: 15px; line-height: 1.6; word-break: keep-all; }
+
+/* 표제란 — 도면 오른쪽 아래 칸처럼 눈금선 표 */
+.pj-meta {
+    display: grid;
+    margin: 0;
+    min-width: 220px;
+    border: 1px solid var(--rule);
+    border-radius: var(--r-sm);
+}
+.pj-meta > div { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: var(--sp-2); padding: 7px var(--sp-3); align-items: center; }
+.pj-meta > div + div { border-top: 1px solid var(--rule-faint); }
+.pj-meta dt { color: var(--txt-dim); font-size: 12px; }
+.pj-meta dd { margin: 0; color: var(--txt-strong); font-size: 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.pj-meta__note { color: var(--txt-sub); font-size: 12px; }
+.pj-inline {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--brass);
+    font: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+}
+.pj-see-map { margin: 0; color: var(--txt-dim); font-size: 14px; }
+
+.pj-body { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: var(--sp-6); }
+.pj-points { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--sp-3); }
+.pj-points li {
+    position: relative;
+    padding-left: var(--sp-5);
+    color: var(--txt);
+    font-size: 15px;
+    line-height: 1.7;
+    word-break: keep-all;
+}
+.pj-points li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 10px;
+    height: 1px;
+    background: var(--brass);
+}
+.pj-side { display: grid; align-content: start; gap: var(--sp-2); }
+.pj-side__label { margin: var(--sp-2) 0 0; color: var(--txt-dim); font-size: 12px; }
+.pj-side__label:first-child { margin-top: 0; }
+.pj-repos, .pj-links { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.pj-repo, .pj-go {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 36px;
+    padding: 4px var(--sp-3);
+    border: 1px solid var(--rule);
+    border-radius: var(--r-sm);
+    color: var(--txt-strong);
+    font-size: 13px;
+    text-decoration: none;
+}
+.pj-repo:hover, .pj-go:hover { border-color: var(--brass-dim); background: var(--brass-ghost); }
+.pj-repo.is-private { color: var(--txt-sub); border-style: dashed; }
+.pj-repo.is-private:hover { border-color: var(--rule); background: none; }
+.pj-repo__host { color: var(--txt-dim); font-size: 11px; }
+.pj-stack { margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.pj-stack span { padding: 2px 8px; border-radius: var(--r-pill); background: var(--surf-raised); color: var(--txt-sub); font-size: 12px; }
+
+/* ── 이전 작업 ───────────────────────────────────────────────────────── */
+.pj-archive ul { list-style: none; margin: var(--sp-3) 0 0; padding: 0; border-top: 1px solid var(--rule); }
+.pj-archive li {
+    display: grid;
+    grid-template-columns: 88px minmax(0, 1fr) auto;
+    gap: var(--sp-4);
+    align-items: center;
+    padding: var(--sp-2) 0;
+    border-bottom: 1px solid var(--rule-faint);
+}
+.pj-archive__year { color: var(--txt-dim); font-size: 13px; }
+.pj-archive__text { color: var(--txt); font-size: 14px; }
+
+/* ── 도면 ────────────────────────────────────────────────────────────── */
+.bp { margin: 0; display: grid; gap: var(--sp-2); min-width: 0; }
+.bp-scroll {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    border: 1px solid var(--rule-faint);
+    border-radius: var(--r-md);
+    background:
+        linear-gradient(var(--rule-faint) 1px, transparent 1px) 0 0 / 24px 24px,
+        linear-gradient(90deg, var(--rule-faint) 1px, transparent 1px) 0 0 / 24px 24px,
+        var(--surf-sunken);
+}
+/* 넓은 화면에서는 원래 크기의 1.25배까지만(인라인 max-width) */
+.bp-svg { display: block; width: 100%; min-width: var(--bp-min); height: auto; margin: 0 auto; }
+.bp-swipe { display: none; margin: 0; color: var(--txt-dim); font-size: 12px; text-align: right; }
+.bp-lane { fill: none; stroke: var(--rule-strong); stroke-dasharray: 4 4; }
+.bp-lane-label { fill: var(--txt-dim); font-size: 11px; font-family: var(--font-sans); }
+.bp-node { fill: var(--surf); stroke: var(--rule-strong); stroke-width: 1; }
+.bp-node--user { fill: var(--surf-raised); }
+.bp-node--store { fill: var(--surf-raised); }
+.bp-store-lid { stroke: var(--rule-strong); }
+.bp-node--ai { stroke: var(--brass); fill: color-mix(in srgb, var(--brass) 10%, var(--surf)); }
+.bp-node--ext { stroke-dasharray: 5 3; fill: var(--surf-sunken); }
+.bp-node--plan { stroke-dasharray: 3 4; fill: none; stroke: var(--txt-faint); }
+.bp-title { fill: var(--txt-strong); font-size: 13px; font-weight: 600; font-family: var(--font-sans); }
+.bp-sub { fill: var(--txt-dim); font-size: 11px; font-family: var(--font-sans); }
+.bp-node--plan ~ .bp-title, .bp-node--plan ~ .bp-sub { fill: var(--txt-dim); }
+.bp-edge { fill: none; stroke: var(--txt-dim); stroke-width: 1.25; }
+.bp-edge.is-dashed { stroke-dasharray: 5 4; }
+.bp-arrow { fill: var(--txt-dim); }
+/* 라벨 뒤에 판 색 테두리(halo) — 선 위에 얹혀도 글자가 읽힌다 */
+.bp-edge-label {
+    fill: var(--txt-sub);
+    font-size: 11px;
+    font-family: var(--font-sans);
+    paint-order: stroke;
+    stroke: var(--surf-sunken);
+    stroke-width: 5px;
+    stroke-linejoin: round;
+}
+.bp-link { cursor: pointer; outline: none; }
+.bp-link:hover .bp-node, .bp-link:focus-visible .bp-node { stroke: var(--brass); stroke-width: 2; }
+.bp-link:focus-visible .bp-title { text-decoration: underline; }
+
+.bp-caption { display: grid; gap: 6px; color: var(--txt-sub); font-size: 13px; line-height: 1.6; }
+.bp-legend { display: flex; flex-wrap: wrap; gap: var(--sp-3); color: var(--txt-dim); font-size: 12px; }
+.bp-key { display: inline-flex; align-items: center; gap: 6px; }
+.bp-key::before { content: ''; width: 14px; height: 10px; border: 1px solid var(--rule-strong); border-radius: 2px; background: var(--surf); }
+.bp-key--user::before { border-radius: 5px; background: var(--surf-raised); }
+.bp-key--store::before { background: var(--surf-raised); }
+.bp-key--ai::before { border-color: var(--brass); background: color-mix(in srgb, var(--brass) 10%, var(--surf)); }
+.bp-key--ext::before { border-style: dashed; background: var(--surf-sunken); }
+.bp-key--plan::before { border-style: dotted; border-color: var(--txt-faint); background: none; }
+.bp-key--dashed::before { height: 0; border-width: 0 0 1px; border-style: dashed; border-color: var(--txt-dim); background: none; }
+
+/* ── 반응형 ──────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+    .pj-title { grid-template-columns: auto minmax(0, 1fr); }
+    .pj-meta { grid-column: 1 / -1; }
+    .pj-body { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 768px) {
+    .pj-root { gap: var(--sp-6); }
+    .pj-sheets { gap: var(--sp-8); }
+    .pj-title__no { font-size: 24px; }
+    .pj-title__main h2 { font-size: 19px; }
+    .pj-points li { font-size: 14px; }
+    .pj-repo, .pj-go, .pj-inline, .pj-frame .button { min-height: 44px; }
+    .pj-inline { display: inline-flex; align-items: center; } /* 글자 링크(a)는 inline 이라 min-height 가 안 먹는다 */
+    /* 도면은 원래 크기로 — 글자 13px 을 지키고 옆으로 민다 */
+    .bp-svg { min-width: var(--bp-w); }
+    .bp-swipe { display: block; }
+    .pj-totals > div { margin-right: var(--sp-3); padding-right: var(--sp-3); }
+    .pj-totals > div + div:not(.pj-totals__src) { padding-left: var(--sp-3); }
+    .pj-totals dd { font-size: 20px; }
+    .pj-totals__src { flex-basis: 100%; margin-left: 0 !important; padding: 0 0 var(--sp-3) !important; }
+    .pj-archive li { grid-template-columns: minmax(0, 1fr) auto; gap: 4px var(--sp-3); }
+    .pj-archive__year { grid-column: 1 / -1; }
+    .pj-totals__src a, .pj-toc__item { min-height: 44px; display: inline-flex; align-items: center; }
+}
+
+/* ── 상태 칩 (ui/Badge 대신 — 내보낸 HTML 에 ui.css 를 싣지 않으려고) ─── */
+.pj-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 8px;
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--r-sm);
+    font-size: 12px;
+    line-height: 1.6;
+}
+.pj-status--good { color: var(--st-good); border-color: var(--st-good); background: var(--st-good-ghost); }
+.pj-status--info { color: var(--st-info); border-color: var(--st-info); background: var(--st-info-ghost); }
+.pj-status--brass { color: var(--brass); border-color: var(--brass-dim); background: var(--brass-ghost); }
+.pj-status--neutral { color: var(--txt-sub); }
+
+/* ── 관리 모드 ───────────────────────────────────────────────────────── */
+.pj-ownerbar {
+    margin-bottom: var(--sp-5);
+    padding: var(--sp-3) var(--sp-4);
+    border: 1px solid var(--brass-dim);
+    border-radius: var(--r-md);
+    background: var(--brass-ghost);
+    color: var(--txt);
+    font-size: 14px;
+    line-height: 1.6;
+}
+.pj-ownerbar.is-warn { border-color: var(--st-warn); background: var(--st-warn-ghost); }
+.pj-ownerbar b { color: var(--txt-strong); }
+.pj-ownerbar__err { color: var(--st-serious); }
+.pj-allow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+    margin-top: var(--sp-2);
+    min-height: 36px;
+    padding: 2px var(--sp-3) 2px var(--sp-2);
+    border: 1px dashed var(--rule-strong);
+    border-radius: var(--r-pill);
+    color: var(--txt-sub);
+    font-size: 13px;
+    cursor: pointer;
+}
+.pj-allow input { width: 18px; height: 18px; accent-color: var(--brass); }
+.pj-allow.is-on { border-style: solid; border-color: var(--brass-dim); color: var(--txt-strong); }
+.pj-allow--mini { margin-top: 0; }
+.pj-sheet.is-hidden { border-top-style: dashed; }
+.pj-sheet.is-hidden > :not(.pj-title) { opacity: 0.55; }
+.pj-archive li.is-hidden .pj-archive__text { color: var(--txt-dim); }
+.pj-archive__end { display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--sp-2); }
+
+/* ── 공유 · 내보내기 서랍 ───────────────────────────────────────────── */
+.pj-panel { display: grid; gap: var(--sp-6); }
+.pj-panel__sect { display: grid; gap: var(--sp-3); }
+.pj-panel__sect h3 { margin: 0; font-size: 15px; color: var(--txt-strong); }
+.pj-panel__sect > .button { justify-self: start; }
+.pj-field { display: grid; gap: 6px; font-size: 13px; color: var(--txt-sub); font-weight: 600; }
+.pj-field em { font-style: normal; font-weight: 400; color: var(--txt-dim); }
+.pj-note { margin: 0; color: var(--txt-sub); font-size: 13px; line-height: 1.65; }
+.pj-note code { font-family: var(--font-mono); font-size: 12px; }
+.pj-note--warn { color: var(--txt); padding: var(--sp-2) var(--sp-3); border-left: 2px solid var(--st-warn); background: var(--st-warn-ghost); }
+.pj-picks { list-style: none; margin: 0; padding: 0; display: grid; border-top: 1px solid var(--rule-faint); }
+.pj-picks label {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    min-height: 44px;
+    padding: 4px 0;
+    border-bottom: 1px solid var(--rule-faint);
+    cursor: pointer;
+}
+.pj-picks input { width: 18px; height: 18px; accent-color: var(--brass); flex: 0 0 auto; }
+.pj-picks__label { flex: 1 1 auto; min-width: 0; color: var(--txt); font-size: 14px; }
+.pj-picks__tag { color: var(--txt-dim); font-size: 12px; }
+.pj-picks__tag.is-on { color: var(--brass); }
+.pj-check { display: inline-flex; align-items: center; gap: var(--sp-2); min-height: 44px; color: var(--txt); font-size: 14px; cursor: pointer; }
+.pj-check input { width: 18px; height: 18px; accent-color: var(--brass); }
+.pj-shares { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-2); }
+.pj-shares li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sp-2) var(--sp-3);
+    padding: var(--sp-2) var(--sp-3);
+    border: 1px solid var(--rule);
+    border-radius: var(--r-sm);
+}
+.pj-shares li.is-revoked { opacity: 0.55; border-style: dashed; }
+.pj-shares__main { flex: 1 1 200px; min-width: 0; }
+.pj-shares__title { margin: 0; color: var(--txt-strong); font-size: 14px; font-weight: 600; }
+.pj-shares__sub { margin: 2px 0 0; color: var(--txt-dim); font-size: 12px; }
+.pj-shares__actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.pj-msg { padding: var(--sp-3); border-left: 2px solid var(--st-good); background: var(--st-good-ghost); color: var(--txt); font-size: 13px; }
+.pj-msg--err { border-left-color: var(--st-serious); background: var(--st-serious-ghost); }
+.pj-msg p { margin: 0; }
+.pj-msg__url { margin-top: var(--sp-2) !important; display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
+.pj-msg__url code { font-family: var(--font-mono); font-size: 12px; word-break: break-all; color: var(--txt-strong); }
+@media (max-width: 768px) {
+    .pj-allow { min-height: 44px; }
+    .pj-panel .button { min-height: 44px; }
+}
+
+/* 공유 문서 — /s/:id · 내보낸 HTML. 앱 셸 밖이라 페이지 여백·폭을 스스로 잡는다.
+   색은 ui/tokens.css 만. 내보낸 파일에는 tokens.css 원문이 같이 실린다. */
+
+.sh-page {
+    width: min(1180px, 100%);
+    margin: 0 auto;
+    padding: var(--sp-8) var(--sp-6) var(--sp-10);
+    display: grid;
+    gap: var(--sp-8);
+    color: var(--txt);
+    font-family: var(--font-sans);
+}
+.sh-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: var(--sp-3) var(--sp-6);
+    padding-bottom: var(--sp-4);
+    border-bottom: 1px solid var(--rule);
+}
+.sh-name { margin: 0; color: var(--txt-strong); font-size: 20px; font-weight: 700; }
+.sh-role { margin: 2px 0 0; color: var(--txt-sub); font-size: 14px; }
+.sh-contact { margin: 0; display: flex; flex-wrap: wrap; gap: var(--sp-4); font-size: 14px; }
+.sh-contact a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--txt-strong);
+    text-decoration: underline;
+    text-decoration-color: var(--brass-dim);
+    text-underline-offset: 4px;
+}
+.sh-hero { display: grid; gap: 6px; }
+.sh-kicker { margin: 0; color: var(--brass); font-family: var(--font-mono); font-size: 11px; letter-spacing: var(--tracking-label); }
+.sh-title { margin: 0; color: var(--txt-strong); font-size: clamp(26px, 4vw, 38px); line-height: 1.25; word-break: keep-all; }
+.sh-sub { margin: 0; color: var(--txt-sub); font-size: 16px; }
+.sh-empty { margin: 0; padding: var(--sp-8) 0; color: var(--txt-dim); text-align: center; }
+.sh-foot { padding-top: var(--sp-4); border-top: 1px solid var(--rule-faint); color: var(--txt-dim); font-size: 12px; }
+.sh-state { min-height: 60vh; display: grid; place-content: center; gap: var(--sp-2); text-align: center; color: var(--txt-sub); }
+.sh-state h1 { margin: 0; color: var(--txt-strong); font-size: 22px; }
+.sh-state p { margin: 0; }
+
+@media (max-width: 768px) {
+    .sh-page { padding: var(--sp-5) var(--sp-4) var(--sp-8); gap: var(--sp-6); }
+}
+
+/* gahusb.github.io — 도면집의 표지와 목차. 색은 ui/tokens.css 만(빌드 때 원문이 같이 실린다). */
+
+.pg-page {
+    width: min(1180px, 100%);
+    margin: 0 auto;
+    padding: 0 var(--sp-6) var(--sp-10);
+    display: grid;
+    gap: var(--sp-10);
+    color: var(--txt);
+    font-family: var(--font-sans);
+}
+.pg-page .tnum { font-variant-numeric: tabular-nums; }
+
+/* ── 표지 ──────────────────────────────────────────────────────────── */
+.pg-cover {
+    position: relative;
+    display: grid;
+    gap: var(--sp-3);
+    padding: clamp(48px, 10vw, 120px) 0 var(--sp-8);
+    border-bottom: 2px solid var(--rule-strong);
+}
+/* 모눈 — 도면 용지. 표지 위쪽에서 흐려지며 사라진다 */
+.pg-cover::before {
+    content: '';
+    position: absolute;
+    inset: 0 calc(-1 * var(--sp-6));
+    z-index: -1;
+    background:
+        linear-gradient(var(--rule-faint) 1px, transparent 1px) 0 0 / 32px 32px,
+        linear-gradient(90deg, var(--rule-faint) 1px, transparent 1px) 0 0 / 32px 32px;
+    mask-image: linear-gradient(to bottom, black 0%, transparent 95%);
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 95%);
+}
+.pg-kicker { margin: 0; color: var(--brass); font-family: var(--font-mono); font-size: 12px; letter-spacing: var(--tracking-label); }
+.pg-name {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px var(--sp-4);
+    color: var(--txt-strong);
+    font-size: clamp(44px, 9vw, 96px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+}
+.pg-name__en {
+    color: var(--txt-dim);
+    font-size: clamp(16px, 2.4vw, 24px);
+    font-weight: 500;
+    font-stretch: 110%;
+    letter-spacing: 0.02em;
+}
+.pg-role { margin: 0; color: var(--brass); font-size: clamp(17px, 2vw, 21px); font-weight: 600; }
+.pg-headline {
+    margin: var(--sp-2) 0 0;
+    max-width: 44em;
+    color: var(--txt-sub);
+    font-size: clamp(16px, 1.8vw, 19px);
+    line-height: 1.75;
+    word-break: keep-all;
+}
+
+/* 표제란 — 도면 오른쪽 아래 칸처럼 눈금선 표 */
+.pg-contact {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    margin: var(--sp-5) 0 0;
+    border: 1px solid var(--rule);
+    border-radius: var(--r-sm);
+    background: var(--surf);
+}
+.pg-contact > div { display: grid; gap: 2px; padding: var(--sp-3) var(--sp-4); min-width: 0; }
+.pg-contact > div + div { border-left: 1px solid var(--rule-faint); }
+.pg-contact dt { color: var(--txt-dim); font-size: 12px; }
+.pg-contact dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.pg-contact a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    color: var(--txt-strong);
+    font-size: 15px;
+    text-decoration: none;
+}
+.pg-contact a:hover { color: var(--brass); }
+.pg-contact__note { display: inline-flex; align-items: center; min-height: 32px; color: var(--txt-sub); font-size: 14px; }
+
+.pg-nav { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-4); }
+.pg-nav a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+    min-height: 44px;
+    padding: 0 var(--sp-4);
+    border: 1px solid var(--rule);
+    border-radius: var(--r-pill);
+    color: var(--txt);
+    font-size: 14px;
+    text-decoration: none;
+}
+.pg-nav a:hover { border-color: var(--brass-dim); background: var(--brass-ghost); }
+.pg-nav__no { color: var(--brass); font-family: var(--font-mono); font-size: 11px; }
+
+/* ── 구획 ──────────────────────────────────────────────────────────── */
+.pg-sect { display: grid; gap: var(--sp-5); scroll-margin-top: var(--sp-6); }
+.pg-h2 {
+    margin: 0;
+    padding-bottom: var(--sp-3);
+    border-bottom: 1px solid var(--rule);
+    color: var(--txt-strong);
+    font-size: clamp(24px, 3vw, 32px);
+}
+.pg-h3 { margin: var(--sp-4) 0 0; color: var(--txt-sub); font-size: 16px; }
+.pg-src { color: var(--txt-dim); font-size: 12px; }
+
+.pg-timeline { list-style: none; margin: 0; padding: 0; display: grid; }
+.pg-timeline li {
+    display: grid;
+    grid-template-columns: 170px minmax(0, 1fr);
+    gap: var(--sp-5);
+    padding: var(--sp-4) 0;
+    border-bottom: 1px solid var(--rule-faint);
+}
+.pg-timeline__when { margin: 0; color: var(--txt-dim); font-size: 14px; padding-top: 3px; }
+.pg-timeline h3 { margin: 0; color: var(--txt-strong); font-size: 19px; }
+.pg-timeline__role { margin: 2px 0 0; color: var(--brass); font-size: 14px; }
+.pg-timeline__desc { margin: var(--sp-2) 0 0; color: var(--txt); font-size: 15px; line-height: 1.7; word-break: keep-all; }
+.pg-timeline--compact h3 { font-size: 16px; }
+
+.pg-skills { margin: 0; display: grid; }
+.pg-skills > div {
+    display: grid;
+    grid-template-columns: 170px minmax(0, 1fr);
+    gap: var(--sp-5);
+    padding: var(--sp-3) 0;
+    border-bottom: 1px solid var(--rule-faint);
+}
+.pg-skills dt { color: var(--txt-dim); font-size: 14px; padding-top: 4px; }
+.pg-skills dd { margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.pg-skills span { padding: 3px 10px; border: 1px solid var(--rule); border-radius: var(--r-pill); color: var(--txt); font-size: 13px; }
+
+.pg-foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    padding-top: var(--sp-4);
+    border-top: 1px solid var(--rule);
+    color: var(--txt-dim);
+    font-size: 13px;
+}
+.pg-foot p { margin: 0; }
+.pg-foot a { color: var(--txt-sub); display: inline-flex; align-items: center; min-height: 44px; }
+
+@media (max-width: 768px) {
+    .pg-page { padding: 0 var(--sp-4) var(--sp-8); gap: var(--sp-8); }
+    .pg-cover::before { inset: 0 calc(-1 * var(--sp-4)); }
+    .pg-contact > div + div { border-left: 0; border-top: 1px solid var(--rule-faint); }
+    .pg-contact a { min-height: 44px; }
+    .pg-timeline li, .pg-skills > div { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+}
+
+/* 미리보기 띠 (web-ui 안에서만 — 빌드 결과에는 없다) */
+.pg-preview-bar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sp-3);
+    padding: var(--sp-2) var(--sp-4);
+    border-bottom: 1px solid var(--brass-dim);
+    background: var(--surf-sunken);
+    color: var(--txt-sub);
+    font-size: 13px;
+}
+.pg-preview-bar b { color: var(--brass); }
+.pg-preview-bar a { color: var(--txt-strong); }
+
+html{scroll-behavior:smooth}@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="pg-page"><header class="pg-cover"><p class="pg-kicker">PORTFOLIO</p><h1 class="pg-name">박재오<span class="pg-name__en">JaeOh Park</span></h1><p class="pg-role">서버 개발자</p><p class="pg-headline">교통 데이터 서버를 만드는 백엔드 개발자에서, LLM 을 실제 서비스에 붙이는 AI 엔지니어로 성장하고 있습니다.</p><dl class="pg-contact"><div><dt>이메일</dt><dd><a href="mailto:bgg8988@gmail.com">bgg8988@gmail.com</a></dd></div><div><dt>전화</dt><dd><span class="pg-contact__note">메일로 요청해 주시면 알려 드립니다</span></dd></div><div><dt>GitHub</dt><dd><a href="https://github.com/gahusb" target="_blank" rel="noreferrer">github.com/gahusb</a></dd></div></dl><nav class="pg-nav" aria-label="페이지 목차"><a href="#careers"><span class="pg-nav__no">01</span>경력</a><a href="#projects"><span class="pg-nav__no">02</span>프로젝트</a><a href="#skills"><span class="pg-nav__no">03</span>기술</a></nav></header><section id="careers" class="pg-sect" aria-labelledby="pg-careers"><h2 id="pg-careers" class="pg-h2">경력</h2><ol class="pg-timeline"><li><p class="pg-timeline__when tnum">2023.02 – 현재</p><div><h3>현대오토에버</h3><p class="pg-timeline__role">Server Developer</p><p class="pg-timeline__desc">국내 교통 데이터 가공 서버 백엔드 개발자입니다.</p></div></li><li><p class="pg-timeline__when tnum">2020.01 – 2023.02</p><div><h3>롯데정보통신</h3><p class="pg-timeline__role">Embedded Application Developer</p><p class="pg-timeline__desc">수도권 캐시비 운전자 MCU, 승하차 태깅 단말기 내 응용 소프트웨어 개발자입니다.</p></div></li></ol><h3 class="pg-h3">교육</h3><ol class="pg-timeline pg-timeline--compact"><li><p class="pg-timeline__when tnum">2019.07 – 2019.12</p><div><h3>SSAFY</h3><p class="pg-timeline__role">소프트웨어 개발</p><p class="pg-timeline__desc">JAVA Spring을 활용한 BE 개발부터 Web FE 개발까지 전체적인 개발의 체계를 학습했습니다.</p></div></li></ol></section><section id="projects" class="pg-sect" aria-labelledby="pg-projects"><h2 id="pg-projects" class="pg-h2">프로젝트</h2><div class="pj-root"><dl class="pj-totals" aria-label="저장소 요약"><div><dt>저장소</dt><dd class="tnum">6</dd></div><div><dt>커밋</dt><dd class="tnum">2,513</dd></div><div><dt>첫 커밋</dt><dd class="tnum">2026</dd></div><div class="pj-totals__src"><span class="pg-src">개발 기록에서 자동 집계</span></div></dl><section id="system-map" class="pj-map" tabindex="-1" aria-labelledby="pj-map-title"><h2 id="pj-map-title" class="pj-h2">시스템 지도</h2><p class="pj-hint">상자를 누르면 그 프로젝트 설명으로 갑니다.</p><figure class="bp"><p class="bp-swipe" aria-hidden="true">옆으로 밀어서 보기 →</p><div class="bp-scroll"><svg class="bp-svg" viewBox="0 0 1120 600" role="img" aria-label="개인 웹 플랫폼 전체 구조 — 요청은 nginx 를 지나 도메인별 서비스로, 무거운 생성 작업은 Redis 큐를 통해 Windows GPU 워커로 간다" style="--bp-min:880px;--bp-w:1120px;max-width:1400px"><defs><marker id="aRqj" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="bp-arrow" d="M0 0 L10 5 L0 10 z"></path></marker></defs><g><rect class="bp-lane" x="8" y="8" width="152" height="416" rx="6"></rect><text class="bp-lane-label" x="18" y="24">브라우저</text></g><g><rect class="bp-lane" x="176" y="8" width="564" height="416" rx="6"></rect><text class="bp-lane-label" x="186" y="24">NAS · Docker Compose</text></g><g><rect class="bp-lane" x="756" y="8" width="356" height="268" rx="6"></rect><text class="bp-lane-label" x="766" y="24">Windows · RTX 5070 Ti</text></g><g><rect class="bp-lane" x="756" y="292" width="356" height="132" rx="6"></rect><text class="bp-lane-label" x="766" y="308">외부 API</text></g><g><rect class="bp-lane" x="8" y="440" width="1104" height="152" rx="6"></rect><text class="bp-lane-label" x="18" y="456">개발 · 배포 루프</text></g><g><path class="bp-edge" d="M144 206 L196 206" marker-end="url(#aRqj)"></path><text class="bp-edge-label" x="170" y="210" text-anchor="middle">HTTPS</text></g><g><path class="bp-edge" d="M312 206 L328 206 L328 70 L344 70" marker-end="url(#aRqj)"></path></g><g><path class="bp-edge" d="M312 206 L328 206 L328 138 L344 138" marker-end="url(#aRqj)"></path></g><g><path class="bp-edge" d="M312 206 L344 206" marker-end="url(#aRqj)"></path></g><g><path class="bp-edge" d="M312 206 L328 206 L328 274 L344 274" marker-end="url(#aRqj)"></path></g><g><path class="bp-edge" d="M520 70 L596 70" marker-end="url(#aRqj)"></path><text class="bp-edge-label" x="558" y="74" text-anchor="middle">읽기·쓰기</text></g><g><path class="bp-edge" d="M520 138 L740 138 L740 354 L772 354" marker-end="url(#aRqj)"></path><text class="bp-edge-label" x="630" y="142" text-anchor="middle">해석 요청</text></g><g><path class="bp-edge" d="M520 206 L556 206 L556 274 L596 274" marker-end="url(#aRqj)"></path><text class="bp-edge-label" x="556" y="244" text-anchor="middle">작업 넣기</text></g><g><path class="bp-edge" d="M520 370 L556 370 L556 274 L596 274" marker-end="url(#aRqj)"></path><text class="bp-edge-label" x="556" y="326" text-anchor="middle">메시지·락</text></g><g><path class="bp-edge" d="M728 274 L756 274 L756 70 L772 70" marker-end="url(#aRqj)"></path><text class="bp-edge-label" x="756" y="242" text-anchor="middle">꺼내 처리</text></g><g><path class="bp-edge" d="M920 70 L948 70" marker-end="url(#aRqj)"></path></g><g><path class="bp-edge" d="M920 70 L934 70 L934 354 L948 354" marker-end="url(#aRqj)"></path><text class="bp-edge-label" x="934" y="304" text-anchor="middle">API 호출</text></g><g><path class="bp-edge" d="M212 522 L280 522 L280 370 L344 370" marker-end="url(#aRqj)"></path><text class="bp-edge-label" x="280" y="450" text-anchor="middle">작업·락 교환</text></g><g><path class="bp-edge" d="M212 522 L468 522" marker-end="url(#aRqj)"></path><text class="bp-edge-label" x="340" y="526" text-anchor="middle">git push</text></g><g><path class="bp-edge" d="M616 522 L700 522" marker-end="url(#aRqj)"></path><text class="bp-edge-label" x="658" y="526" text-anchor="middle">webhook</text></g><g><rect class="bp-node bp-node--user" x="24" y="184" width="120" height="44" rx="22"></rect><text class="bp-title" x="84" y="203" text-anchor="middle">사용자</text><text class="bp-sub" x="84" y="218" text-anchor="middle">React SPA</text></g><g><rect class="bp-node bp-node--svc" x="196" y="184" width="116" height="44" rx="4"></rect><text class="bp-title" x="254" y="203" text-anchor="middle">nginx</text><text class="bp-sub" x="254" y="218" text-anchor="middle">/api/* 경로 분배</text></g><a class="bp-link" href="#p-platform" aria-label="생활 데이터 — 프로젝트 설명으로 이동"><rect class="bp-node bp-node--svc" x="344" y="48" width="176" height="44" rx="4"></rect><text class="bp-title" x="432" y="67" text-anchor="middle">생활 데이터</text><text class="bp-sub" x="432" y="82" text-anchor="middle">로또·주식·청약·여행</text></a><a class="bp-link" href="#p-llm-services" aria-label="AI 해석 — 프로젝트 설명으로 이동"><rect class="bp-node bp-node--ai" x="344" y="116" width="176" height="44" rx="4"></rect><text class="bp-title" x="432" y="135" text-anchor="middle">AI 해석</text><text class="bp-sub" x="432" y="150" text-anchor="middle">사주·타로·인스타 카드</text></a><a class="bp-link" href="#p-gpu-workers" aria-label="생성 미디어 — 프로젝트 설명으로 이동"><rect class="bp-node bp-node--svc" x="344" y="184" width="176" height="44" rx="4"></rect><text class="bp-title" x="432" y="203" text-anchor="middle">생성 미디어</text><text class="bp-sub" x="432" y="218" text-anchor="middle">음악·영상·이미지</text></a><a class="bp-link" href="#p-platform" aria-label="운영 · 기록 — 프로젝트 설명으로 이동"><rect class="bp-node bp-node--svc" x="344" y="252" width="176" height="44" rx="4"></rect><text class="bp-title" x="432" y="271" text-anchor="middle">운영 · 기록</text><text class="bp-sub" x="432" y="286" text-anchor="middle">포트폴리오·devlog·에이전트</text></a><a class="bp-link" href="#p-co-gahusb" aria-label="co-gahusb — 프로젝트 설명으로 이동"><rect class="bp-node bp-node--ai" x="344" y="348" width="176" height="44" rx="4"></rect><text class="bp-title" x="432" y="367" text-anchor="middle">co-gahusb</text><text class="bp-sub" x="432" y="382" text-anchor="middle">MCP 팀버스</text></a><g><rect class="bp-node bp-node--store" x="596" y="48" width="132" height="44" rx="4"></rect><line class="bp-store-lid" x1="602" x2="722" y1="55" y2="55"></line><text class="bp-title" x="662" y="67" text-anchor="middle">SQLite</text><text class="bp-sub" x="662" y="82" text-anchor="middle">서비스별 DB</text></g><g><rect class="bp-node bp-node--store" x="596" y="252" width="132" height="44" rx="4"></rect><line class="bp-store-lid" x1="602" x2="722" y1="259" y2="259"></line><text class="bp-title" x="662" y="271" text-anchor="middle">Redis</text><text class="bp-sub" x="662" y="286" text-anchor="middle">작업 큐 · 버스 저장</text></g><a class="bp-link" href="#p-gpu-workers" aria-label="렌더 워커 7종 — 프로젝트 설명으로 이동"><rect class="bp-node bp-node--svc" x="772" y="48" width="148" height="44" rx="4"></rect><text class="bp-title" x="846" y="67" text-anchor="middle">렌더 워커 7종</text><text class="bp-sub" x="846" y="82" text-anchor="middle">heartbeat 45s</text></a><a class="bp-link" href="#p-gpu-workers" aria-label="MusicGen — 프로젝트 설명으로 이동"><rect class="bp-node bp-node--ai" x="948" y="48" width="148" height="44" rx="4"></rect><text class="bp-title" x="1022" y="67" text-anchor="middle">MusicGen</text><text class="bp-sub" x="1022" y="82" text-anchor="middle">로컬 GPU 추론</text></a><a class="bp-link" href="#p-ai-trade" aria-label="ai_trade — 프로젝트 설명으로 이동"><rect class="bp-node bp-node--ai" x="772" y="172" width="148" height="44" rx="4"></rect><text class="bp-title" x="846" y="191" text-anchor="middle">ai_trade</text><text class="bp-sub" x="846" y="206" text-anchor="middle">Chronos 신호</text></a><a class="bp-link" href="#p-llm-services" aria-label="Claude API — 프로젝트 설명으로 이동"><rect class="bp-node bp-node--ai" x="772" y="332" width="148" height="44" rx="4"></rect><text class="bp-title" x="846" y="351" text-anchor="middle">Claude API</text><text class="bp-sub" x="846" y="366" text-anchor="middle">Haiku · Sonnet</text></a><g><rect class="bp-node bp-node--ext" x="948" y="332" width="148" height="44" rx="4"></rect><text class="bp-title" x="1022" y="351" text-anchor="middle">생성 공급자</text><text class="bp-sub" x="1022" y="366" text-anchor="middle">Suno·Sora·Veo…</text></g><a class="bp-link" href="#p-co-gahusb" aria-label="Claude Code 세션 — 프로젝트 설명으로 이동"><rect class="bp-node bp-node--user" x="24" y="500" width="188" height="44" rx="22"></rect><text class="bp-title" x="118" y="519" text-anchor="middle">Claude Code 세션</text><text class="bp-sub" x="118" y="534" text-anchor="middle">FE · BE · AI</text></a><g><rect class="bp-node bp-node--svc" x="468" y="500" width="148" height="44" rx="4"></rect><text class="bp-title" x="542" y="519" text-anchor="middle">Gitea</text><text class="bp-sub" x="542" y="534" text-anchor="middle">비공개 저장소</text></g><g><rect class="bp-node bp-node--svc" x="700" y="500" width="176" height="44" rx="4"></rect><text class="bp-title" x="788" y="519" text-anchor="middle">deployer</text><text class="bp-sub" x="788" y="534" text-anchor="middle">컨테이너 재기동</text></g></svg></div><figcaption class="bp-caption"><span>개인 웹 플랫폼 전체 구조 — 요청은 nginx 를 지나 도메인별 서비스로, 무거운 생성 작업은 Redis 큐를 통해 Windows GPU 워커로 간다</span><span class="bp-legend" aria-hidden="true"><span class="bp-key bp-key--user">사람·화면</span><span class="bp-key bp-key--svc">우리 코드</span><span class="bp-key bp-key--ai">모델</span><span class="bp-key bp-key--store">저장소</span><span class="bp-key bp-key--ext">외부 서비스</span></span></figcaption></figure></section><nav class="pj-toc" aria-label="프로젝트 목록"><a class="pj-toc__item" href="#p-platform"><span class="pj-toc__no tnum">01</span><span>개인 웹 플랫폼</span></a><a class="pj-toc__item" href="#p-llm-services"><span class="pj-toc__no tnum">02</span><span>LLM 해석 서비스</span></a><a class="pj-toc__item" href="#p-co-gahusb"><span class="pj-toc__no tnum">03</span><span>co-gahusb — AI 세션 협업 버스</span></a><a class="pj-toc__item" href="#p-gpu-workers"><span class="pj-toc__no tnum">04</span><span>NAS ↔ GPU 분산 워커</span></a><a class="pj-toc__item" href="#p-ai-trade"><span class="pj-toc__no tnum">05</span><span>ai_trade — 시계열 신호 파이프라인</span></a><a class="pj-toc__item" href="#p-jaengseung-made"><span class="pj-toc__no tnum">06</span><span>쟁승메이드</span></a><a class="pj-toc__item" href="#p-emochu"><span class="pj-toc__no tnum">07</span><span>이모추!</span></a><a class="pj-toc__item" href="#p-archetype-firstspark"><span class="pj-toc__no tnum">08</span><span>Archetype: First Spark</span></a></nav><div class="pj-sheets"><article id="p-platform" class="pj-sheet" tabindex="-1" aria-labelledby="t-platform"><header class="pj-title"><span class="pj-title__no" aria-hidden="true">01</span><div class="pj-title__main"><h2 id="t-platform">개인 웹 플랫폼</h2><p>지금 보고 계신 이 사이트. NAS 한 대 위의 Python 서비스 17개와 React 앱</p></div><dl class="pj-meta"><div><dt>상태</dt><dd><span class="pj-status pj-status--good">운영 중</span></dd></div><div><dt>기간</dt><dd class="tnum">2026.01 – 현재</dd></div><div><dt>커밋</dt><dd class="tnum">1,776</dd></div></dl></header><p class="pj-see-map">구조도는 맨 위 <a class="pj-inline" href="#system-map">시스템 지도</a>에 있습니다.</p><div class="pj-body"><ul class="pj-points"><li>Python 서비스 17개(FastAPI 16 · FastMCP 1)를 Docker Compose 한 벌로 운영하고, nginx 가 경로별로 나눠 보낸다</li><li>git push → Gitea webhook → deployer 가 컨테이너를 다시 띄운다. 프론트는 로컬 빌드 후 NAS 로 동기화</li><li>두 저장소 커밋의 약 68% 를 Claude Code 와 함께 작성했다(공동 작성 표기 기준 하한)</li></ul><div class="pj-side"><p class="pj-side__label">저장소</p><div class="pj-repos"><span class="pj-repo is-private" title="비공개 저장소라 링크를 두지 않았습니다"><span class="pj-repo__host">비공개</span>web-ui</span><span class="pj-repo is-private" title="비공개 저장소라 링크를 두지 않았습니다"><span class="pj-repo__host">비공개</span>web-backend</span></div><p class="pj-side__label">기술</p><p class="pj-stack"><span>React</span><span>Vite</span><span>FastAPI</span><span>Docker Compose</span><span>nginx</span><span>Redis</span><span>SQLite</span><span>Gitea</span></p></div></div></article><article id="p-llm-services" class="pj-sheet" tabindex="-1" aria-labelledby="t-llm-services"><header class="pj-title"><span class="pj-title__no" aria-hidden="true">02</span><div class="pj-title__main"><h2 id="t-llm-services">LLM 해석 서비스</h2><p>사주·타로·인스타 카드·음악 검토에 Claude 를 붙인 방식</p></div><dl class="pj-meta"><div><dt>상태</dt><dd><span class="pj-status pj-status--good">운영 중</span></dd></div><div><dt>범위</dt><dd><a class="pj-inline" href="#p-platform">개인 웹 플랫폼</a>의 일부</dd></div></dl></header><figure class="bp"><p class="bp-swipe" aria-hidden="true">옆으로 밀어서 보기 →</p><div class="bp-scroll"><svg class="bp-svg" viewBox="0 0 900 262" role="img" aria-label="사주 해석 한 건의 경로 — 계산은 코드가, 문장은 모델이 쓰고, 결과는 스키마 검증을 통과해야 저장된다" style="--bp-min:640px;--bp-w:900px;max-width:1125px"><defs><marker id="aR8kj" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="bp-arrow" d="M0 0 L10 5 L0 10 z"></path></marker></defs><g><path class="bp-edge" d="M148 62 L188 62" marker-end="url(#aR8kj)"></path><text class="bp-edge-label" x="168" y="66" text-anchor="middle">입력</text></g><g><path class="bp-edge" d="M336 62 L376 62" marker-end="url(#aR8kj)"></path><text class="bp-edge-label" x="356" y="66" text-anchor="middle">명식</text></g><g><path class="bp-edge" d="M540 62 L580 62" marker-end="url(#aR8kj)"></path><text class="bp-edge-label" x="560" y="66" text-anchor="middle">응답</text></g><g><path class="bp-edge is-dashed" d="M622 84 L622 106 L491 106 L491 84" marker-end="url(#aR8kj)"></path><text class="bp-edge-label" x="556.5" y="110" text-anchor="middle">잘리면 재생성</text></g><g><path class="bp-edge" d="M720 62 L760 62" marker-end="url(#aR8kj)"></path><text class="bp-edge-label" x="740" y="66" text-anchor="middle">저장</text></g><g><path class="bp-edge" d="M822 84 L822 184" marker-end="url(#aR8kj)"></path><text class="bp-edge-label" x="822" y="138" text-anchor="middle">조회</text></g><g><path class="bp-edge is-dashed" d="M458 84 L458 184" marker-end="url(#aR8kj)"></path><text class="bp-edge-label" x="458" y="138" text-anchor="middle">실패</text></g><g><path class="bp-edge" d="M540 206 L760 206" marker-end="url(#aR8kj)"></path><text class="bp-edge-label" x="650" y="210" text-anchor="middle">할 수 있는 일만 안내</text></g><g><rect class="bp-node bp-node--user" x="16" y="40" width="132" height="44" rx="22"></rect><text class="bp-title" x="82" y="59" text-anchor="middle">생년월일시</text><text class="bp-sub" x="82" y="74" text-anchor="middle">7개 필드</text></g><g><rect class="bp-node bp-node--svc" x="188" y="40" width="148" height="44" rx="4"></rect><text class="bp-title" x="262" y="59" text-anchor="middle">만세력 계산</text><text class="bp-sub" x="262" y="74" text-anchor="middle">사주·대운·12운성</text></g><g><rect class="bp-node bp-node--ai" x="376" y="40" width="164" height="44" rx="4"></rect><text class="bp-title" x="458" y="59" text-anchor="middle">Claude Sonnet</text><text class="bp-sub" x="458" y="74" text-anchor="middle">12항목 JSON + 근거</text></g><g><rect class="bp-node bp-node--svc" x="580" y="40" width="140" height="44" rx="4"></rect><text class="bp-title" x="650" y="59" text-anchor="middle">스키마 검증</text><text class="bp-sub" x="650" y="74" text-anchor="middle">키·빈 값 검사</text></g><g><rect class="bp-node bp-node--store" x="760" y="40" width="124" height="44" rx="4"></rect><line class="bp-store-lid" x1="766" x2="878" y1="47" y2="47"></line><text class="bp-title" x="822" y="59" text-anchor="middle">SQLite</text><text class="bp-sub" x="822" y="74" text-anchor="middle">해석 영속</text></g><g><rect class="bp-node bp-node--svc" x="376" y="184" width="164" height="44" rx="4"></rect><text class="bp-title" x="458" y="203" text-anchor="middle">error_kind 분류</text><text class="bp-sub" x="458" y="218" text-anchor="middle">6종 · 재시도 여부</text></g><g><rect class="bp-node bp-node--user" x="760" y="184" width="124" height="44" rx="22"></rect><text class="bp-title" x="822" y="203" text-anchor="middle">화면</text><text class="bp-sub" x="822" y="218" text-anchor="middle">운영 원문 fixture</text></g></svg></div><figcaption class="bp-caption"><span>사주 해석 한 건의 경로 — 계산은 코드가, 문장은 모델이 쓰고, 결과는 스키마 검증을 통과해야 저장된다</span><span class="bp-legend" aria-hidden="true"><span class="bp-key bp-key--user">사람·화면</span><span class="bp-key bp-key--svc">우리 코드</span><span class="bp-key bp-key--ai">모델</span><span class="bp-key bp-key--store">저장소</span><span class="bp-key bp-key--dashed">점선 = 비동기·예외·예정</span></span></figcaption></figure><div class="pj-body"><ul class="pj-points"><li>6개 서비스, 호출 파일 18곳. 짧은 분류는 Haiku, 긴 해석은 Sonnet 으로 나누고 모델은 환경변수로 바꾼다</li><li>해석은 항목마다 입력 데이터 인용(근거)을 요구하고, 응답이 잘리면 길이를 줄이라는 피드백을 붙여 다시 만든다</li><li>업스트림 오류를 6종으로 분류해, 재시도가 의미 없는 오류에서는 재시도 버튼을 거둔다</li></ul><div class="pj-side"><p class="pj-side__label">저장소</p><div class="pj-repos"><span class="pj-repo is-private" title="비공개 저장소라 링크를 두지 않았습니다"><span class="pj-repo__host">비공개</span>web-backend</span></div><p class="pj-side__label">기술</p><p class="pj-stack"><span>Claude API</span><span>Haiku</span><span>Sonnet</span><span>FastAPI</span><span>Vitest</span></p></div></div></article><article id="p-co-gahusb" class="pj-sheet" tabindex="-1" aria-labelledby="t-co-gahusb"><header class="pj-title"><span class="pj-title__no" aria-hidden="true">03</span><div class="pj-title__main"><h2 id="t-co-gahusb">co-gahusb — AI 세션 협업 버스</h2><p>Claude Code 세션 여러 개가 한 코드베이스를 나눠 쓰게 하는 MCP 서버</p></div><dl class="pj-meta"><div><dt>상태</dt><dd><span class="pj-status pj-status--good">운영 중</span></dd></div><div><dt>범위</dt><dd><a class="pj-inline" href="#p-platform">개인 웹 플랫폼</a>의 일부</dd></div></dl></header><figure class="bp"><p class="bp-swipe" aria-hidden="true">옆으로 밀어서 보기 →</p><div class="bp-scroll"><svg class="bp-svg" viewBox="0 0 900 244" role="img" aria-label="세션 셋이 한 코드베이스를 나눠 쓰는 방법 — 모든 협업은 MCP 도구 호출로 Redis 에 남는다" style="--bp-min:640px;--bp-w:900px;max-width:1125px"><defs><marker id="aR8sj" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="bp-arrow" d="M0 0 L10 5 L0 10 z"></path></marker></defs><g><path class="bp-edge" d="M164 38 L248 38 L248 122 L332 122" marker-end="url(#aR8sj)"></path><text class="bp-edge-label" x="248" y="84" text-anchor="middle">post_message</text></g><g><path class="bp-edge" d="M164 122 L332 122" marker-end="url(#aR8sj)"></path><text class="bp-edge-label" x="248" y="126" text-anchor="middle">claim_task</text></g><g><path class="bp-edge" d="M164 206 L248 206 L248 122 L332 122" marker-end="url(#aR8sj)"></path><text class="bp-edge-label" x="248" y="168" text-anchor="middle">acquire_lock</text></g><g><path class="bp-edge" d="M512 122 L572 122" marker-end="url(#aR8sj)"></path><text class="bp-edge-label" x="542" y="126" text-anchor="middle">기록</text></g><g><path class="bp-edge" d="M700 122 L724 122 L724 38 L748 38" marker-end="url(#aR8sj)"></path><text class="bp-edge-label" x="724" y="84" text-anchor="middle">배포·스키마·nginx</text></g><g><path class="bp-edge" d="M700 122 L724 122 L724 206 L748 206" marker-end="url(#aR8sj)"></path><text class="bp-edge-label" x="724" y="168" text-anchor="middle">계약 변경</text></g><g><rect class="bp-node bp-node--user" x="16" y="16" width="148" height="44" rx="22"></rect><text class="bp-title" x="90" y="35" text-anchor="middle">FE 세션</text><text class="bp-sub" x="90" y="50" text-anchor="middle">web-ui 만 쓴다</text></g><g><rect class="bp-node bp-node--user" x="16" y="100" width="148" height="44" rx="22"></rect><text class="bp-title" x="90" y="119" text-anchor="middle">BE 세션</text><text class="bp-sub" x="90" y="134" text-anchor="middle">web-backend 만 쓴다</text></g><g><rect class="bp-node bp-node--user" x="16" y="184" width="148" height="44" rx="22"></rect><text class="bp-title" x="90" y="203" text-anchor="middle">AI 세션</text><text class="bp-sub" x="90" y="218" text-anchor="middle">web-ai 만 쓴다</text></g><g><rect class="bp-node bp-node--ai" x="332" y="100" width="180" height="44" rx="4"></rect><text class="bp-title" x="422" y="119" text-anchor="middle">co-gahusb</text><text class="bp-sub" x="422" y="134" text-anchor="middle">FastMCP · 도구 11개</text></g><g><rect class="bp-node bp-node--store" x="572" y="100" width="128" height="44" rx="4"></rect><line class="bp-store-lid" x1="578" x2="694" y1="107" y2="107"></line><text class="bp-title" x="636" y="119" text-anchor="middle">Redis</text><text class="bp-sub" x="636" y="134" text-anchor="middle">영속 상태</text></g><g><rect class="bp-node bp-node--svc" x="748" y="16" width="136" height="44" rx="4"></rect><text class="bp-title" x="816" y="35" text-anchor="middle">공유 자원 락</text><text class="bp-sub" x="816" y="50" text-anchor="middle">TTL 자동 해제</text></g><g><rect class="bp-node bp-node--svc" x="748" y="184" width="136" height="44" rx="4"></rect><text class="bp-title" x="816" y="203" text-anchor="middle">우편함</text><text class="bp-sub" x="816" y="218" text-anchor="middle">append-only</text></g></svg></div><figcaption class="bp-caption"><span>세션 셋이 한 코드베이스를 나눠 쓰는 방법 — 모든 협업은 MCP 도구 호출로 Redis 에 남는다</span><span class="bp-legend" aria-hidden="true"><span class="bp-key bp-key--user">사람·화면</span><span class="bp-key bp-key--ai">모델</span><span class="bp-key bp-key--store">저장소</span><span class="bp-key bp-key--svc">우리 코드</span></span></figcaption></figure><div class="pj-body"><ul class="pj-points"><li>도구 11개(메시지·작업·락·팀 로그), 테스트 23개</li><li>저장소마다 쓰는 세션을 하나로 정하고, 배포·DB 스키마·nginx 같은 공유 자원은 락을 잡아야 바꾼다</li><li>작업 노트가 덮어쓰기라 계약 정정이 사라진 사고 뒤로, 계약 변경은 append-only 우편함으로만 보낸다</li></ul><div class="pj-side"><p class="pj-side__label">저장소</p><div class="pj-repos"><span class="pj-repo is-private" title="비공개 저장소라 링크를 두지 않았습니다"><span class="pj-repo__host">비공개</span>web-backend/co-gahusb</span></div><p class="pj-side__label">기술</p><p class="pj-stack"><span>MCP</span><span>FastMCP</span><span>Redis</span><span>Python</span></p></div></div></article><article id="p-gpu-workers" class="pj-sheet" tabindex="-1" aria-labelledby="t-gpu-workers"><header class="pj-title"><span class="pj-title__no" aria-hidden="true">04</span><div class="pj-title__main"><h2 id="t-gpu-workers">NAS ↔ GPU 분산 워커</h2><p>NAS 는 큐에 넣고, Windows GPU 머신이 꺼내 생성한다</p></div><dl class="pj-meta"><div><dt>상태</dt><dd><span class="pj-status pj-status--good">운영 중</span></dd></div><div><dt>범위</dt><dd><a class="pj-inline" href="#p-platform">개인 웹 플랫폼</a>의 일부</dd></div></dl></header><figure class="bp"><p class="bp-swipe" aria-hidden="true">옆으로 밀어서 보기 →</p><div class="bp-scroll"><svg class="bp-svg" viewBox="0 0 940 290" role="img" aria-label="생성 작업 한 건의 왕복 — NAS 는 큐에 넣기만 하고, GPU 워커가 꺼내 처리한 뒤 결과를 웹훅으로 돌려보낸다" style="--bp-min:640px;--bp-w:940px;max-width:1175px"><defs><marker id="aR94j" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="bp-arrow" d="M0 0 L10 5 L0 10 z"></path></marker></defs><g><rect class="bp-lane" x="8" y="8" width="456" height="274" rx="6"></rect><text class="bp-lane-label" x="18" y="24">NAS</text></g><g><rect class="bp-lane" x="480" y="8" width="452" height="274" rx="6"></rect><text class="bp-lane-label" x="490" y="24">Windows · RTX 5070 Ti</text></g><g><path class="bp-edge" d="M144 62 L204 62" marker-end="url(#aR94j)"></path><text class="bp-edge-label" x="174" y="66" text-anchor="middle">생성 요청</text></g><g><path class="bp-edge" d="M266 84 L266 152" marker-end="url(#aR94j)"></path><text class="bp-edge-label" x="266" y="122" text-anchor="middle">작업 넣기</text></g><g><path class="bp-edge" d="M328 174 L504 174" marker-end="url(#aR94j)"></path><text class="bp-edge-label" x="416" y="178" text-anchor="middle">꺼내기</text></g><g><path class="bp-edge" d="M660 174 L716 174 L716 62 L768 62" marker-end="url(#aR94j)"></path><text class="bp-edge-label" x="716" y="122" text-anchor="middle">로컬</text></g><g><path class="bp-edge" d="M660 174 L768 174" marker-end="url(#aR94j)"></path><text class="bp-edge-label" x="714" y="178" text-anchor="middle">API</text></g><g><path class="bp-edge is-dashed" d="M582 152 L582 118 L398 118 L398 84" marker-end="url(#aR94j)"></path><text class="bp-edge-label" x="490" y="122" text-anchor="middle">heartbeat</text></g><g><path class="bp-edge is-dashed" d="M551 196 L551 232 L108 232 L108 196" marker-end="url(#aR94j)"></path><text class="bp-edge-label" x="329.5" y="236" text-anchor="middle">webhook 로 결과 회신</text></g><g><path class="bp-edge" d="M84 152 L84 84" marker-end="url(#aR94j)"></path><text class="bp-edge-label" x="84" y="122" text-anchor="middle">재생</text></g><g><rect class="bp-node bp-node--user" x="24" y="40" width="120" height="44" rx="22"></rect><text class="bp-title" x="84" y="59" text-anchor="middle">화면</text><text class="bp-sub" x="84" y="74" text-anchor="middle">/music · /image</text></g><g><rect class="bp-node bp-node--svc" x="204" y="40" width="124" height="44" rx="4"></rect><text class="bp-title" x="266" y="59" text-anchor="middle">생성 lab</text><text class="bp-sub" x="266" y="74" text-anchor="middle">음악·영상·이미지</text></g><g><rect class="bp-node bp-node--svc" x="344" y="40" width="108" height="44" rx="4"></rect><text class="bp-title" x="398" y="59" text-anchor="middle">/infra 관측</text><text class="bp-sub" x="398" y="74" text-anchor="middle">3초 폴링</text></g><g><rect class="bp-node bp-node--store" x="24" y="152" width="120" height="44" rx="4"></rect><line class="bp-store-lid" x1="30" x2="138" y1="159" y2="159"></line><text class="bp-title" x="84" y="171" text-anchor="middle">/media</text><text class="bp-sub" x="84" y="186" text-anchor="middle">결과 파일</text></g><g><rect class="bp-node bp-node--store" x="204" y="152" width="124" height="44" rx="4"></rect><line class="bp-store-lid" x1="210" x2="322" y1="159" y2="159"></line><text class="bp-title" x="266" y="171" text-anchor="middle">Redis</text><text class="bp-sub" x="266" y="186" text-anchor="middle">reliable queue</text></g><g><rect class="bp-node bp-node--svc" x="504" y="152" width="156" height="44" rx="4"></rect><text class="bp-title" x="582" y="171" text-anchor="middle">렌더 워커 7종</text><text class="bp-sub" x="582" y="186" text-anchor="middle">큐 규약 공유</text></g><g><rect class="bp-node bp-node--ai" x="768" y="40" width="148" height="44" rx="4"></rect><text class="bp-title" x="842" y="59" text-anchor="middle">MusicGen</text><text class="bp-sub" x="842" y="74" text-anchor="middle">로컬 추론</text></g><g><rect class="bp-node bp-node--ext" x="768" y="152" width="148" height="44" rx="4"></rect><text class="bp-title" x="842" y="171" text-anchor="middle">생성 공급자 9종</text><text class="bp-sub" x="842" y="186" text-anchor="middle">Suno·Sora·Veo·Kling…</text></g></svg></div><figcaption class="bp-caption"><span>생성 작업 한 건의 왕복 — NAS 는 큐에 넣기만 하고, GPU 워커가 꺼내 처리한 뒤 결과를 웹훅으로 돌려보낸다</span><span class="bp-legend" aria-hidden="true"><span class="bp-key bp-key--user">사람·화면</span><span class="bp-key bp-key--svc">우리 코드</span><span class="bp-key bp-key--store">저장소</span><span class="bp-key bp-key--ai">모델</span><span class="bp-key bp-key--ext">외부 서비스</span><span class="bp-key bp-key--dashed">점선 = 비동기·예외·예정</span></span></figcaption></figure><div class="pj-body"><ul class="pj-points"><li>렌더·수집·감시 워커 7종이 같은 reliable queue 규약과 45초 heartbeat 를 쓴다</li><li>음악 2 · 영상 4 · 이미지 3, 공급자 9종을 요청 계약 하나(provider·prompt·params) 뒤에 묶었다</li><li>결과는 웹훅으로 NAS 에 돌려보내고, 워커 상태는 /infra 가 3초마다 본다</li></ul><div class="pj-side"><p class="pj-side__label">저장소</p><div class="pj-repos"><span class="pj-repo is-private" title="비공개 저장소라 링크를 두지 않았습니다"><span class="pj-repo__host">비공개</span>web-ai/services</span></div><p class="pj-side__label">기술</p><p class="pj-stack"><span>Redis</span><span>Python</span><span>MusicGen</span><span>Sora</span><span>Veo</span><span>Suno</span><span>NSSM</span></p></div></div></article><article id="p-ai-trade" class="pj-sheet" tabindex="-1" aria-labelledby="t-ai-trade"><header class="pj-title"><span class="pj-title__no" aria-hidden="true">05</span><div class="pj-title__main"><h2 id="t-ai-trade">ai_trade — 시계열 신호 파이프라인</h2><p>학습 없이 쓰는 시계열 파운데이션 모델로 매매 신호 후보를 만든다</p></div><dl class="pj-meta"><div><dt>상태</dt><dd><span class="pj-status pj-status--info">개발 중</span></dd></div><div><dt>기간</dt><dd class="tnum">2026.02 – 2026.07</dd></div><div><dt>커밋</dt><dd class="tnum">135</dd></div></dl></header><figure class="bp"><p class="bp-swipe" aria-hidden="true">옆으로 밀어서 보기 →</p><div class="bp-scroll"><svg class="bp-svg" viewBox="0 0 900 252" role="img" aria-label="장중 1분마다 도는 신호 파이프라인 — 두 데이터 원천을 모아 예측과 모멘텀으로 나눠 본 뒤 규칙이 신호를 낸다. 검증·알림 단계는 아직 예정이다" style="--bp-min:640px;--bp-w:900px;max-width:1125px"><defs><marker id="aR9cj" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="bp-arrow" d="M0 0 L10 5 L0 10 z"></path></marker></defs><g><path class="bp-edge" d="M168 46 L200 46 L200 110 L232 110" marker-end="url(#aR9cj)"></path><text class="bp-edge-label" x="200" y="82" text-anchor="middle">pull · 캐시</text></g><g><path class="bp-edge" d="M168 174 L200 174 L200 110 L232 110" marker-end="url(#aR9cj)"></path><text class="bp-edge-label" x="200" y="146" text-anchor="middle">초당 2회 제한</text></g><g><path class="bp-edge" d="M384 110 L416 110 L416 46 L448 46" marker-end="url(#aR9cj)"></path><text class="bp-edge-label" x="416" y="82" text-anchor="middle">시계열</text></g><g><path class="bp-edge" d="M384 110 L416 110 L416 174 L448 174" marker-end="url(#aR9cj)"></path><text class="bp-edge-label" x="416" y="146" text-anchor="middle">분봉</text></g><g><path class="bp-edge" d="M608 46 L640 46 L640 110 L672 110" marker-end="url(#aR9cj)"></path></g><g><path class="bp-edge" d="M608 174 L640 174 L640 110 L672 110" marker-end="url(#aR9cj)"></path></g><g><path class="bp-edge is-dashed" d="M748 132 L748 164 L778 164 L778 196" marker-end="url(#aR9cj)"></path><text class="bp-edge-label" x="748" y="152" text-anchor="middle">예정</text></g><g><rect class="bp-node bp-node--svc" x="16" y="24" width="152" height="44" rx="4"></rect><text class="bp-title" x="92" y="43" text-anchor="middle">NAS stock API</text><text class="bp-sub" x="92" y="58" text-anchor="middle">포트폴리오·스크리너</text></g><g><rect class="bp-node bp-node--ext" x="16" y="152" width="152" height="44" rx="4"></rect><text class="bp-title" x="92" y="171" text-anchor="middle">KIS Open API</text><text class="bp-sub" x="92" y="186" text-anchor="middle">분봉 REST · 호가 WS</text></g><g><rect class="bp-node bp-node--svc" x="232" y="88" width="152" height="44" rx="4"></rect><text class="bp-title" x="308" y="107" text-anchor="middle">pull_worker</text><text class="bp-sub" x="308" y="122" text-anchor="middle">장중 1분 cron</text></g><g><rect class="bp-node bp-node--ai" x="448" y="24" width="160" height="44" rx="4"></rect><text class="bp-title" x="528" y="43" text-anchor="middle">Chronos-bolt</text><text class="bp-sub" x="528" y="58" text-anchor="middle">분위 예측 · FP32</text></g><g><rect class="bp-node bp-node--svc" x="448" y="152" width="160" height="44" rx="4"></rect><text class="bp-title" x="528" y="171" text-anchor="middle">5분봉 모멘텀</text><text class="bp-sub" x="528" y="186" text-anchor="middle">5단계 분류</text></g><g><rect class="bp-node bp-node--svc" x="672" y="88" width="152" height="44" rx="4"></rect><text class="bp-title" x="748" y="107" text-anchor="middle">신호 생성기</text><text class="bp-sub" x="748" y="122" text-anchor="middle">매도 먼저 → 매수</text></g><g><rect class="bp-node bp-node--plan" x="672" y="196" width="212" height="44" rx="4"></rect><text class="bp-title" x="778" y="215" text-anchor="middle">LLM 검증 · 알림</text><text class="bp-sub" x="778" y="230" text-anchor="middle">Phase 5 예정</text></g></svg></div><figcaption class="bp-caption"><span>장중 1분마다 도는 신호 파이프라인 — 두 데이터 원천을 모아 예측과 모멘텀으로 나눠 본 뒤 규칙이 신호를 낸다. 검증·알림 단계는 아직 예정이다</span><span class="bp-legend" aria-hidden="true"><span class="bp-key bp-key--svc">우리 코드</span><span class="bp-key bp-key--ext">외부 서비스</span><span class="bp-key bp-key--ai">모델</span><span class="bp-key bp-key--plan">예정</span><span class="bp-key bp-key--dashed">점선 = 비동기·예외·예정</span></span></figcaption></figure><div class="pj-body"><ul class="pj-points"><li>amazon/chronos-bolt-base 로 zero-shot 분위 예측. FP16 에서 5만 원 이상 주가가 inf 로 넘쳐 FP32 로 고정했다</li><li>KIS 초당 2회 제한에 맞춘 throttle · 호가 WebSocket 지수 재연결</li><li>Phase 4(신호 생성)까지 완료, 테스트 56개. LLM 검증·알림(Phase 5)은 아직이다 — 실주문은 하지 않는다</li></ul><div class="pj-side"><p class="pj-side__label">저장소</p><div class="pj-repos"><span class="pj-repo is-private" title="비공개 저장소라 링크를 두지 않았습니다"><span class="pj-repo__host">비공개</span>web-ai</span></div><p class="pj-side__label">기술</p><p class="pj-stack"><span>Chronos-bolt</span><span>PyTorch</span><span>FastAPI</span><span>KIS Open API</span><span>WebSocket</span></p></div></div></article><article id="p-jaengseung-made" class="pj-sheet" tabindex="-1" aria-labelledby="t-jaengseung-made"><header class="pj-title"><span class="pj-title__no" aria-hidden="true">06</span><div class="pj-title__main"><h2 id="t-jaengseung-made">쟁승메이드</h2><p>자동화 SaaS · AI 음악 가이드 · 외주를 파는 개발 서비스 사이트</p></div><dl class="pj-meta"><div><dt>상태</dt><dd><span class="pj-status pj-status--good">운영 중</span></dd></div><div><dt>기간</dt><dd class="tnum">2026.02 – 2026.07</dd></div><div><dt>커밋</dt><dd class="tnum">378</dd></div></dl></header><figure class="bp"><p class="bp-swipe" aria-hidden="true">옆으로 밀어서 보기 →</p><div class="bp-scroll"><svg class="bp-svg" viewBox="0 0 820 256" role="img" aria-label="한 개의 Next.js 앱이 인증·결제·메일·AI 를 각각 관리형 서비스에 맡긴다. 자체 호스팅으로 옮기는 중이다" style="--bp-min:640px;--bp-w:820px;max-width:1025px"><defs><marker id="aR9kj" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="bp-arrow" d="M0 0 L10 5 L0 10 z"></path></marker></defs><g><path class="bp-edge" d="M136 122 L188 122" marker-end="url(#aR9kj)"></path><text class="bp-edge-label" x="162" y="126" text-anchor="middle">HTTPS</text></g><g><path class="bp-edge" d="M348 122 L400 122 L400 38 L440 38" marker-end="url(#aR9kj)"></path></g><g><path class="bp-edge" d="M348 122 L400 122 L400 98 L440 98" marker-end="url(#aR9kj)"></path></g><g><path class="bp-edge" d="M348 122 L400 122 L400 158 L440 158" marker-end="url(#aR9kj)"></path></g><g><path class="bp-edge" d="M348 122 L400 122 L400 218 L440 218" marker-end="url(#aR9kj)"></path></g><g><path class="bp-edge is-dashed" d="M628 38 L668 38" marker-end="url(#aR9kj)"></path><text class="bp-edge-label" x="648" y="42" text-anchor="middle">이전</text></g><g><rect class="bp-node bp-node--user" x="16" y="100" width="120" height="44" rx="22"></rect><text class="bp-title" x="76" y="119" text-anchor="middle">방문자</text><text class="bp-sub" x="76" y="134" text-anchor="middle">견적·구매</text></g><g><rect class="bp-node bp-node--svc" x="188" y="100" width="160" height="44" rx="4"></rect><text class="bp-title" x="268" y="119" text-anchor="middle">Next.js 16</text><text class="bp-sub" x="268" y="134" text-anchor="middle">Vercel · App Router</text></g><g><rect class="bp-node bp-node--store" x="440" y="16" width="188" height="44" rx="4"></rect><line class="bp-store-lid" x1="446" x2="622" y1="23" y2="23"></line><text class="bp-title" x="534" y="35" text-anchor="middle">Supabase</text><text class="bp-sub" x="534" y="50" text-anchor="middle">Auth · Postgres RLS</text></g><g><rect class="bp-node bp-node--ext" x="440" y="76" width="188" height="44" rx="4"></rect><text class="bp-title" x="534" y="95" text-anchor="middle">Portone</text><text class="bp-sub" x="534" y="110" text-anchor="middle">결제</text></g><g><rect class="bp-node bp-node--ext" x="440" y="136" width="188" height="44" rx="4"></rect><text class="bp-title" x="534" y="155" text-anchor="middle">Resend</text><text class="bp-sub" x="534" y="170" text-anchor="middle">메일 발송</text></g><g><rect class="bp-node bp-node--ai" x="440" y="196" width="188" height="44" rx="4"></rect><text class="bp-title" x="534" y="215" text-anchor="middle">Gemini</text><text class="bp-sub" x="534" y="230" text-anchor="middle">AI 사주 12항목</text></g><g><rect class="bp-node bp-node--plan" x="668" y="16" width="140" height="44" rx="4"></rect><text class="bp-title" x="738" y="35" text-anchor="middle">NAS 자체 호스팅</text><text class="bp-sub" x="738" y="50" text-anchor="middle">이전 진행 중</text></g></svg></div><figcaption class="bp-caption"><span>한 개의 Next.js 앱이 인증·결제·메일·AI 를 각각 관리형 서비스에 맡긴다. 자체 호스팅으로 옮기는 중이다</span><span class="bp-legend" aria-hidden="true"><span class="bp-key bp-key--user">사람·화면</span><span class="bp-key bp-key--svc">우리 코드</span><span class="bp-key bp-key--store">저장소</span><span class="bp-key bp-key--ext">외부 서비스</span><span class="bp-key bp-key--ai">모델</span><span class="bp-key bp-key--plan">예정</span><span class="bp-key bp-key--dashed">점선 = 비동기·예외·예정</span></span></figcaption></figure><div class="pj-body"><ul class="pj-points"><li>인증·DB(RLS)·스토리지는 Supabase, 결제는 Portone, 메일은 Resend 에 맡겼다</li><li>AI 사주는 사주팔자 계산 뒤 Gemini 로 12항목 해석</li><li>Vercel · 관리형 Supabase 에서 NAS 자체 호스팅(self-host Supabase + standalone 빌드)으로 이전 중</li></ul><div class="pj-side"><p class="pj-side__label">저장소</p><div class="pj-repos"><a class="pj-repo" href="https://github.com/gahusb/jaengseung-made" target="_blank" rel="noreferrer" aria-label="jaengseung-made 저장소 (GitHub, 새 탭)"><span class="pj-repo__host">GitHub</span>jaengseung-made<span aria-hidden="true"> ↗</span></a></div><p class="pj-side__label">직접 보기</p><div class="pj-links"><a class="pj-go" href="https://jaengseung-made.com" target="_blank" rel="noreferrer">jaengseung-made.com ↗</a></div><p class="pj-side__label">기술</p><p class="pj-stack"><span>Next.js 16</span><span>TypeScript</span><span>Supabase</span><span>Portone</span><span>Resend</span><span>Gemini</span><span>Vercel</span></p></div></div></article><article id="p-emochu" class="pj-sheet" tabindex="-1" aria-labelledby="t-emochu"><header class="pj-title"><span class="pj-title__no" aria-hidden="true">07</span><div class="pj-title__main"><h2 id="t-emochu">이모추!</h2><p>기분·동반자·사주로 주말 여행 코스를 짜 주는 서비스</p></div><dl class="pj-meta"><div><dt>상태</dt><dd><span class="pj-status pj-status--brass">공모전</span><span class="pj-meta__note">2026 관광데이터 활용 공모전 예비심사 합격</span></dd></div><div><dt>기간</dt><dd class="tnum">2026.04 – 현재</dd></div><div><dt>커밋</dt><dd class="tnum">183</dd></div></dl></header><figure class="bp"><p class="bp-swipe" aria-hidden="true">옆으로 밀어서 보기 →</p><div class="bp-scroll"><svg class="bp-svg" viewBox="0 0 920 216" role="img" aria-label="주말 코스 한 건이 만들어지는 순서 — 공공 데이터로 후보를 좁힌 뒤에만 모델을 부르고, 모델 결과는 다시 검증한다" style="--bp-min:640px;--bp-w:920px;max-width:1150px"><defs><marker id="aR9sj" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="bp-arrow" d="M0 0 L10 5 L0 10 z"></path></marker></defs><g><path class="bp-edge" d="M160 46 L200 46" marker-end="url(#aR9sj)"></path><text class="bp-edge-label" x="180" y="50" text-anchor="middle">위치</text></g><g><path class="bp-edge" d="M344 46 L384 46" marker-end="url(#aR9sj)"></path><text class="bp-edge-label" x="364" y="50" text-anchor="middle">후보</text></g><g><path class="bp-edge" d="M528 46 L568 46" marker-end="url(#aR9sj)"></path><text class="bp-edge-label" x="548" y="50" text-anchor="middle">상위</text></g><g><path class="bp-edge" d="M712 46 L752 46" marker-end="url(#aR9sj)"></path><text class="bp-edge-label" x="732" y="50" text-anchor="middle">코스</text></g><g><path class="bp-edge" d="M640 148 L640 68" marker-end="url(#aR9sj)"></path><text class="bp-edge-label" x="640" y="112" text-anchor="middle">날씨</text></g><g><path class="bp-edge" d="M828 68 L828 148" marker-end="url(#aR9sj)"></path><text class="bp-edge-label" x="828" y="112" text-anchor="middle">통과</text></g><g><rect class="bp-node bp-node--user" x="16" y="24" width="144" height="44" rx="22"></rect><text class="bp-title" x="88" y="43" text-anchor="middle">조건 입력</text><text class="bp-sub" x="88" y="58" text-anchor="middle">위치·기분·동반자</text></g><g><rect class="bp-node bp-node--ext" x="200" y="24" width="144" height="44" rx="4"></rect><text class="bp-title" x="272" y="43" text-anchor="middle">TourAPI</text><text class="bp-sub" x="272" y="58" text-anchor="middle">후보 수집</text></g><g><rect class="bp-node bp-node--svc" x="384" y="24" width="144" height="44" rx="4"></rect><text class="bp-title" x="456" y="43" text-anchor="middle">사전 스코어링</text><text class="bp-sub" x="456" y="58" text-anchor="middle">취향×감정×편의</text></g><g><rect class="bp-node bp-node--ai" x="568" y="24" width="144" height="44" rx="4"></rect><text class="bp-title" x="640" y="43" text-anchor="middle">Gemini</text><text class="bp-sub" x="640" y="58" text-anchor="middle">코스 생성 · 3단 폴백</text></g><g><rect class="bp-node bp-node--svc" x="752" y="24" width="152" height="44" rx="4"></rect><text class="bp-title" x="828" y="43" text-anchor="middle">검증 · 폴백</text><text class="bp-sub" x="828" y="58" text-anchor="middle">contentId·시간·동선</text></g><g><rect class="bp-node bp-node--ext" x="568" y="148" width="144" height="44" rx="4"></rect><text class="bp-title" x="640" y="167" text-anchor="middle">기상청 예보</text><text class="bp-sub" x="640" y="182" text-anchor="middle">실내·실외 조정</text></g><g><rect class="bp-node bp-node--store" x="752" y="148" width="152" height="44" rx="4"></rect><line class="bp-store-lid" x1="758" x2="898" y1="155" y2="155"></line><text class="bp-title" x="828" y="167" text-anchor="middle">저장 · 공유</text><text class="bp-sub" x="828" y="182" text-anchor="middle">Supabase · 카카오</text></g></svg></div><figcaption class="bp-caption"><span>주말 코스 한 건이 만들어지는 순서 — 공공 데이터로 후보를 좁힌 뒤에만 모델을 부르고, 모델 결과는 다시 검증한다</span><span class="bp-legend" aria-hidden="true"><span class="bp-key bp-key--user">사람·화면</span><span class="bp-key bp-key--ext">외부 서비스</span><span class="bp-key bp-key--svc">우리 코드</span><span class="bp-key bp-key--ai">모델</span><span class="bp-key bp-key--store">저장소</span></span></figcaption></figure><div class="pj-body"><ul class="pj-points"><li>한국관광공사 TourAPI 로 후보를 먼저 좁히고, 점수를 매긴 상위 후보만 Gemini 에 넘긴다</li><li>모델 결과는 contentId·시간 순서·동선 거리로 다시 검증하고, 실패하면 규칙 기반 코스로 대체한다</li><li>기상청 예보로 실내·실외를 조정하고, 코스는 고유 주소로 저장·공유한다</li></ul><div class="pj-side"><p class="pj-side__label">저장소</p><div class="pj-repos"><a class="pj-repo" href="https://github.com/gahusb/emochu" target="_blank" rel="noreferrer" aria-label="emochu 저장소 (GitHub, 새 탭)"><span class="pj-repo__host">GitHub</span>emochu<span aria-hidden="true"> ↗</span></a></div><p class="pj-side__label">직접 보기</p><div class="pj-links"><a class="pj-go" href="https://emochu.vercel.app" target="_blank" rel="noreferrer">emochu.vercel.app ↗</a></div><p class="pj-side__label">기술</p><p class="pj-stack"><span>Next.js 16</span><span>React 19</span><span>Gemini</span><span>TourAPI</span><span>Supabase</span><span>Kakao Maps</span><span>Vitest</span></p></div></div></article><article id="p-archetype-firstspark" class="pj-sheet" tabindex="-1" aria-labelledby="t-archetype-firstspark"><header class="pj-title"><span class="pj-title__no" aria-hidden="true">08</span><div class="pj-title__main"><h2 id="t-archetype-firstspark">Archetype: First Spark</h2><p>웹에서 도는 방치형 게임 — 출시일 없이 계속 다듬는 라이브 운영</p></div><dl class="pj-meta"><div><dt>상태</dt><dd><span class="pj-status pj-status--info">개발 중</span></dd></div><div><dt>기간</dt><dd class="tnum">2026.04 – 2026.05</dd></div><div><dt>커밋</dt><dd class="tnum">41</dd></div></dl></header><figure class="bp"><p class="bp-swipe" aria-hidden="true">옆으로 밀어서 보기 →</p><div class="bp-scroll"><svg class="bp-svg" viewBox="0 0 760 196" role="img" aria-label="게임 코드는 외부 SDK 를 직접 부르지 않는다 — 광고·푸시·분석은 한 경계를 지나야 해서 벤더를 바꿔도 게임이 안 바뀐다" style="--bp-min:640px;--bp-w:760px;max-width:950px"><defs><marker id="aRa4j" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="bp-arrow" d="M0 0 L10 5 L0 10 z"></path></marker></defs><g><path class="bp-edge" d="M144 98 L196 98" marker-end="url(#aRa4j)"></path><text class="bp-edge-label" x="170" y="102" text-anchor="middle">행동</text></g><g><path class="bp-edge" d="M344 98 L370 98 L370 158 L396 158" marker-end="url(#aRa4j)"></path><text class="bp-edge-label" x="370" y="132" text-anchor="middle">저장</text></g><g><path class="bp-edge" d="M344 98 L370 98 L370 38 L396 38" marker-end="url(#aRa4j)"></path><text class="bp-edge-label" x="370" y="72" text-anchor="middle">여기로만</text></g><g><path class="bp-edge is-dashed" d="M544 38 L608 38" marker-end="url(#aRa4j)"></path><text class="bp-edge-label" x="576" y="42" text-anchor="middle">교체 가능</text></g><g><rect class="bp-node bp-node--user" x="16" y="76" width="128" height="44" rx="22"></rect><text class="bp-title" x="80" y="95" text-anchor="middle">React UI</text><text class="bp-sub" x="80" y="110" text-anchor="middle">PWA</text></g><g><rect class="bp-node bp-node--svc" x="196" y="76" width="148" height="44" rx="4"></rect><text class="bp-title" x="270" y="95" text-anchor="middle">게임 루프</text><text class="bp-sub" x="270" y="110" text-anchor="middle">zustand 상태</text></g><g><rect class="bp-node bp-node--store" x="396" y="136" width="148" height="44" rx="4"></rect><line class="bp-store-lid" x1="402" x2="538" y1="143" y2="143"></line><text class="bp-title" x="470" y="155" text-anchor="middle">localStorage</text><text class="bp-sub" x="470" y="170" text-anchor="middle">진행 저장</text></g><g><rect class="bp-node bp-node--svc" x="396" y="16" width="148" height="44" rx="4"></rect><text class="bp-title" x="470" y="35" text-anchor="middle">src/platform</text><text class="bp-sub" x="470" y="50" text-anchor="middle">어댑터 경계</text></g><g><rect class="bp-node bp-node--ext" x="608" y="16" width="136" height="44" rx="4"></rect><text class="bp-title" x="676" y="35" text-anchor="middle">외부 SDK</text><text class="bp-sub" x="676" y="50" text-anchor="middle">광고·푸시·분석</text></g></svg></div><figcaption class="bp-caption"><span>게임 코드는 외부 SDK 를 직접 부르지 않는다 — 광고·푸시·분석은 한 경계를 지나야 해서 벤더를 바꿔도 게임이 안 바뀐다</span><span class="bp-legend" aria-hidden="true"><span class="bp-key bp-key--user">사람·화면</span><span class="bp-key bp-key--svc">우리 코드</span><span class="bp-key bp-key--store">저장소</span><span class="bp-key bp-key--ext">외부 서비스</span><span class="bp-key bp-key--dashed">점선 = 비동기·예외·예정</span></span></figcaption></figure><div class="pj-body"><ul class="pj-points"><li>광고·푸시·분석·PWA 는 src/platform 경계로만 부른다 — 벤더를 바꿔도 게임 코드는 그대로</li><li>게임 상태는 zustand + localStorage</li></ul><div class="pj-side"><p class="pj-side__label">저장소</p><div class="pj-repos"><span class="pj-repo is-private" title="비공개 저장소라 링크를 두지 않았습니다"><span class="pj-repo__host">비공개</span>Archetype-FirstSpark</span></div><p class="pj-side__label">기술</p><p class="pj-stack"><span>React</span><span>TypeScript</span><span>Vite</span><span>zustand</span><span>PWA</span></p></div></div></article></div><section class="pj-archive" aria-labelledby="pj-archive-title"><h2 id="pj-archive-title" class="pj-h2">이전 작업</h2><ul><li class=""><span class="pj-archive__year tnum">2022–2024</span><span class="pj-archive__text">개인 기술 블로그</span><span class="pj-archive__end"><a class="pj-repo" href="https://github.com/gahusb/gahusb.github.io" target="_blank" rel="noreferrer" aria-label="gahusb.github.io 저장소 (GitHub, 새 탭)"><span class="pj-repo__host">GitHub</span>gahusb.github.io<span aria-hidden="true"> ↗</span></a></span></li><li class=""><span class="pj-archive__year tnum">2026</span><span class="pj-archive__text">Gmail API 로 메일 자동 분류·라벨링·자동 답장</span><span class="pj-archive__end"><span class="pj-repo is-private" title="비공개 저장소라 링크를 두지 않았습니다"><span class="pj-repo__host">비공개</span>gmail-automation-rpa</span></span></li><li class=""><span class="pj-archive__year tnum">2022</span><span class="pj-archive__text">알고리즘 공부 기록 (Java)</span><span class="pj-archive__end"><a class="pj-repo" href="https://github.com/gahusb/Algorithms" target="_blank" rel="noreferrer" aria-label="Algorithms 저장소 (GitHub, 새 탭)"><span class="pj-repo__host">GitHub</span>Algorithms<span aria-hidden="true"> ↗</span></a></span></li><li class=""><span class="pj-archive__year tnum">2019</span><span class="pj-archive__text">Python 크롤링으로 만든 롤토체스 정보 Slack 봇</span><span class="pj-archive__end"><a class="pj-repo" href="https://github.com/gahusb/lolchess_bot" target="_blank" rel="noreferrer" aria-label="lolchess_bot 저장소 (GitHub, 새 탭)"><span class="pj-repo__host">GitHub</span>lolchess_bot<span aria-hidden="true"> ↗</span></a></span></li><li class=""><span class="pj-archive__year tnum">2018</span><span class="pj-archive__text">블록체인으로 블랙박스 영상 무결성을 검증하는 종합설계 프로젝트</span><span class="pj-archive__end"><a class="pj-repo" href="https://github.com/gahusb/BIBS" target="_blank" rel="noreferrer" aria-label="BIBS 저장소 (GitHub, 새 탭)"><span class="pj-repo__host">GitHub</span>BIBS<span aria-hidden="true"> ↗</span></a></span></li><li class=""><span class="pj-archive__year tnum">2018</span><span class="pj-archive__text">Kotlin 여행 관리 앱 (학교 사이드 프로젝트)</span><span class="pj-archive__end"><a class="pj-repo" href="https://github.com/gahusb/TravelMaker" target="_blank" rel="noreferrer" aria-label="TravelMaker 저장소 (GitHub, 새 탭)"><span class="pj-repo__host">GitHub</span>TravelMaker<span aria-hidden="true"> ↗</span></a></span></li><li class=""><span class="pj-archive__year tnum">2017</span><span class="pj-archive__text">서울시 오픈소스 공모전 프로젝트</span><span class="pj-archive__end"><a class="pj-repo" href="https://github.com/gahusb/GoTogether_seoul" target="_blank" rel="noreferrer" aria-label="GoTogether_seoul 저장소 (GitHub, 새 탭)"><span class="pj-repo__host">GitHub</span>GoTogether_seoul<span aria-hidden="true"> ↗</span></a></span></li></ul></section></div></section><section id="skills" class="pg-sect" aria-labelledby="pg-skills"><h2 id="pg-skills" class="pg-h2">기술</h2><dl class="pg-skills"><div><dt>언어</dt><dd><span>Python</span><span>JavaScript</span><span>C/C++</span><span>SQL</span><span>HTML/CSS</span><span>JAVA</span></dd></div><div><dt>프레임워크</dt><dd><span>FastAPI</span><span>React</span><span>Vite</span><span>APScheduler</span></dd></div><div><dt>인프라</dt><dd><span>Docker</span><span>Synology NAS</span><span>Nginx</span><span>Gitea</span><span>SQLite</span><span>Linux</span></dd></div><div><dt>도구 · API</dt><dd><span>Git</span><span>Claude API</span><span>Ollama</span><span>KIS Open API</span><span>Suno API</span></dd></div></dl></section><footer class="pg-foot"><p>2026-09-28 기준 · 기간과 커밋 수는 개발 기록에서 자동으로 모은 값입니다.</p><a href="https://github.com/gahusb" target="_blank" rel="noreferrer">GitHub ↗</a></footer></div>
+</body>
+</html>
