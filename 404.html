@@ -375,6 +375,11 @@ input[inputmode='numeric'] {
 body.is-scroll-locked { overflow: hidden; }
 body.is-scroll-locked .site-main { overflow: hidden; }
 
+/* 앱 셸 밖 단독 화면(/s/:id · /pages-preview) — 문서 자체가 스크롤한다.
+   body 의 height:100% + overflow:hidden 은 .site-main 이 스크롤을 맡는다는 전제다. */
+html:has(body.is-standalone),
+body.is-standalone { height: auto; min-height: 100%; overflow: visible; }
+
 /* ── 모바일 ─────────────────────────────────────────────────────────────── */
 
 @media (max-width: 768px) {
@@ -775,6 +780,7 @@ body.is-scroll-locked .site-main { overflow: hidden; }
 }
 
 
+html,body{height:auto;min-height:100%;overflow:visible}
 html{scroll-behavior:smooth}@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
 </style>
 </head>
